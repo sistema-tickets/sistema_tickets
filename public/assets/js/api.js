@@ -23,9 +23,10 @@ async function request(endpoint, method = 'GET', body = null) {
 
 const api = {
     auth: {
-        login:  (email, password) => request('auth.php?action=login', 'POST', { email, password }),
-        logout: ()                 => request('auth.php?action=logout', 'POST'),
-        me:     ()                 => request('auth.php?action=me'),
+        login:    (email, password) => request('auth.php?action=login', 'POST', { email, password }),
+        register: (data)            => request('auth.php?action=register', 'POST', data),
+        logout:   ()                => request('auth.php?action=logout', 'POST'),
+        me:       ()                => request('auth.php?action=me'),
     },
     tickets: {
         list:        (params = {}) => request('tickets.php?' + new URLSearchParams(params)),

@@ -44,6 +44,36 @@ class AuthController
         ], 'Sesión iniciada');
     }
 
+    public function register(): void
+    {
+        $body = json_decode(file_get_contents('php://input'), true) ?? [];
+
+        $v = new Validator();
+        $v->required('nombre', $body['nombre'] ?? null)
+          ->required('email', $body['email'] ?? null)
+          ->email('email', $body['email'] ?? null)
+          ->required('password', $body['password'] ?? null)
+          ->minLength('password', $body['password'] ?? null, 8);
+
+        if ($v->fails()) {
+            Response::error('Datos inválidos', 422, $v->errors());
+        }
+
+        if ($this->model->findByEmail($body['email'])) {
+            Response::error('El email ya está registrado', 409);
+        }
+
+        $data = [
+            'nombre'   => $body['nombre'],
+            'email'    => $body['email'],
+            'password' => $body['password'],
+            'rol_id'   => ROL_USUARIO,
+        ];
+
+        $id = $this->model->create($data);
+        Response::success(['id' => $id], 'Registro exitoso', 201);
+    }
+
     public function logout(): void
     {
         Auth::logout();

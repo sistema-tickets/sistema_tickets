@@ -20,7 +20,7 @@ const Auth = {
     requireAdmin() {
         this.requireAuth();
         if (!this.isAdmin()) {
-            window.location.href = BASE_URL + '/pages/dashboard.html';
+            window.location.href = BASE_URL + '/index.php';
         }
     },
     async logout() {
