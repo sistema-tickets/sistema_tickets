@@ -89,4 +89,39 @@ class UsuarioModel
     {
         $this->db->prepare('UPDATE usuarios SET ultimo_login = NOW() WHERE id = ?')->execute([$id]);
     }
+
+    public function createPasswordResetToken(int $usuarioId): string
+    {
+        $token = bin2hex(random_bytes(32));
+        $stmt = $this->db->prepare(
+            'INSERT INTO password_resets (usuario_id, token, expires_at)
+             VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))'
+        );
+        $stmt->execute([$usuarioId, $token]);
+        return $token;
+    }
+
+    public function validatePasswordResetToken(string $token): ?array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT pr.id, pr.usuario_id, u.email
+             FROM password_resets pr
+             JOIN usuarios u ON u.id = pr.usuario_id
+             WHERE pr.token = ? AND pr.usado = 0 AND pr.expires_at > NOW()
+             LIMIT 1'
+        );
+        $stmt->execute([$token]);
+        return $stmt->fetch() ?: null;
+    }
+
+    public function markResetTokenAsUsed(int $tokenId): void
+    {
+        $this->db->prepare('UPDATE password_resets SET usado = 1 WHERE id = ?')->execute([$tokenId]);
+    }
+
+    public function updatePassword(int $usuarioId, string $password): void
+    {
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $this->db->prepare('UPDATE usuarios SET password = ? WHERE id = ?')->execute([$hash, $usuarioId]);
+    }
 }

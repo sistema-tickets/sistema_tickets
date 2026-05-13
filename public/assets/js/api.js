@@ -27,6 +27,8 @@ const api = {
         register: (data)            => request('auth.php?action=register', 'POST', data),
         logout:   ()                => request('auth.php?action=logout', 'POST'),
         me:       ()                => request('auth.php?action=me'),
+        passwordReset:         (email) => request('auth.php?action=password-reset', 'POST', { email }),
+        passwordResetConfirm:  (token, password) => request('auth.php?action=password-reset-confirm', 'POST', { token, password }),
     },
     tickets: {
         list:        (params = {}) => request('tickets.php?' + new URLSearchParams(params)),

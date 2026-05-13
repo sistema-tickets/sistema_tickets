@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iniciar sesión — Sistema de Incidencias</title>
+  <title>Iniciar sesión — Sistema de Tickets</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -59,7 +59,11 @@
         {{ loading ? 'Ingresando...' : 'Iniciar sesión' }}
       </button>
 
-      <p class="login-sub-center">¿Aún no tienes cuenta? <a href="register.php">Regístrate aquí</a></p>
+      <p class="login-sub-center">
+        <a href="password-reset.html" style="font-size:0.85rem;">¿Olvidaste tu contraseña?</a>
+      </p>
+
+      <p class="login-sub-center">¿Aún no tienes cuenta? <a href="register.html">Regístrate aquí</a></p>
     </form>
 
   </div>
