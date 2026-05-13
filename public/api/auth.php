@@ -14,9 +14,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 $ctrl   = new AuthController();
 
 match (true) {
-    $method === 'POST' && $action === 'login'    => $ctrl->login(),
-    $method === 'POST' && $action === 'register' => $ctrl->register(),
-    $method === 'POST' && $action === 'logout'   => $ctrl->logout(),
-    $method === 'GET'  && $action === 'me'       => $ctrl->me(),
+    $method === 'POST' && $action === 'login'             => $ctrl->login(),
+    $method === 'POST' && $action === 'register'          => $ctrl->register(),
+    $method === 'POST' && $action === 'logout'            => $ctrl->logout(),
+    $method === 'GET'  && $action === 'me'                => $ctrl->me(),
+    $method === 'POST' && $action === 'password-reset'    => $ctrl->passwordReset(),
+    $method === 'POST' && $action === 'password-reset-confirm' => $ctrl->passwordResetConfirm(),
     default => Response::error('Acción no válida', 404),
 };

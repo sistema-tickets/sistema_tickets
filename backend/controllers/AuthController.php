@@ -87,4 +87,61 @@ class AuthController
         unset($data['password']);
         Response::success($data);
     }
+
+    public function passwordReset(): void
+    {
+        $body = json_decode(file_get_contents('php://input'), true) ?? [];
+
+        $v = new Validator();
+        $v->required('email', $body['email'] ?? null)
+          ->email('email', $body['email'] ?? null);
+
+        if ($v->fails()) {
+            Response::error('Datos inválidos', 422, $v->errors());
+        }
+
+        $usuario = $this->model->findByEmail($body['email']);
+
+        if (!$usuario) {
+            // No revelar si el email existe o no por seguridad
+            Response::success(null, 'Si el correo existe, recibirás un enlace para restablecer tu contraseña.');
+        }
+
+        $token = $this->model->createPasswordResetToken($usuario['id']);
+
+        // En producción aquí se enviaría un email con el token/enlace
+        // Por ahora se devuelve en la respuesta para desarrollo
+        $resetUrl = "/sistema_tickets/public/pages/password-reset.html?token=$token";
+
+        Response::success([
+            'message' => 'En desarrollo — token incluido en la respuesta. En producción se enviaría por email.',
+            'reset_url' => $resetUrl,
+            'token' => $token,
+        ], 'Si el correo existe, recibirás un enlace para restablecer tu contraseña.');
+    }
+
+    public function passwordResetConfirm(): void
+    {
+        $body = json_decode(file_get_contents('php://input'), true) ?? [];
+
+        $v = new Validator();
+        $v->required('token', $body['token'] ?? null)
+          ->required('password', $body['password'] ?? null)
+          ->minLength('password', $body['password'] ?? null, 8);
+
+        if ($v->fails()) {
+            Response::error('Datos inválidos', 422, $v->errors());
+        }
+
+        $reset = $this->model->validatePasswordResetToken($body['token']);
+
+        if (!$reset) {
+            Response::error('Token inválido o expirado', 400);
+        }
+
+        $this->model->updatePassword($reset['usuario_id'], $body['password']);
+        $this->model->markResetTokenAsUsed($reset['id']);
+
+        Response::success(null, 'Contraseña actualizada exitosamente.');
+    }
 }
