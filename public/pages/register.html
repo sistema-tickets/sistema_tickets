@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrarse — Sistema de Tickets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons/css/regular-rounded.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="login-body">
+
+  <div id="app" class="login-card" style="max-width:600px" v-cloak>
+
+    <div class="login-logo">
+      <img src="../assets/img/logo.jpg" alt="Logo">
+    </div>
+
+    <h1 class="login-title">Crear cuenta</h1>
+    <p class="login-sub">Regístrate para comenzar a usar el sistema.</p>
+
+    <div v-if="error" class="login-error">
+      <span>⚠</span> {{ error }}
+    </div>
+    <div v-if="success" class="login-success">
+      <span>✓</span> {{ success }}
+    </div>
+
+    <form @submit.prevent="register" class="login-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" v-model="form.nombre" placeholder="Juan Pérez" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" v-model="form.email" placeholder="tucorreo@empresa.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <div class="input-password-wrap">
+            <input :type="showPassword ? 'text' : 'password'" id="password" v-model="form.password" placeholder="••••••••" required minlength="8">
+            <button type="button" class="toggle-pass" @click="showPassword = !showPassword" title="Mostrar/ocultar contraseña">
+              <span><i class="fi fi-rs-eye"></i></span>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password_confirm">Confirmar contraseña</label>
+          <div class="input-password-wrap">
+            <input :type="showPassword ? 'text' : 'password'" id="password_confirm" v-model="form.password_confirm" placeholder="••••••••" required minlength="8">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-login" :disabled="loading">
+        {{ loading ? 'Registrando...' : 'Crear cuenta' }}
+      </button>
+
+      <p class="login-sub-center">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+    </form>
+
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script>
+  Vue.createApp({
+    data() {
+      return {
+        form: { nombre: '', email: '', password: '', password_confirm: '' },
+        error: '',
+        success: '',
+        loading: false,
+        showPassword: false,
+      };
+    },
+    methods: {
+      async register() {
+        this.error = '';
+        this.success = '';
+
+        if (!this.form.nombre || !this.form.email || !this.form.password || !this.form.password_confirm) {
+          this.error = 'Por favor completa todos los campos.';
+          return;
+        }
+        if (this.form.password !== this.form.password_confirm) {
+          this.error = 'Las contraseñas no coinciden';
+          return;
+        }
+
+        this.loading = true;
+        try {
+          const res = await api.auth.register({
+            nombre: this.form.nombre,
+            email: this.form.email,
+            password: this.form.password,
+          });
+          if (res?.success) {
+            this.success = 'Registro exitoso. Redirigiendo al login...';
+            setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+          } else {
+            this.error = res?.message || 'Error al registrarse';
+          }
+        } catch {
+          this.error = 'Error de conexión. Intenta de nuevo.';
+        } finally {
+          this.loading = false;
+        }
+      }
+    }
+  }).mount('#app');
+  </script>
+</body>
+</html>

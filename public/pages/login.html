@@ -3,66 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — Sistema de Tickets</title>
+  <title>Iniciar sesión — Sistema de Incidencias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons/css/regular-rounded.css">
   <link rel="stylesheet" href="../assets/css/main.css">
 </head>
-<body>
-<div id="app" class="login-page" v-cloak>
-  <div class="card login-card">
+<body class="login-body">
+
+  <div id="app" class="login-card" v-cloak>
+
     <div class="login-logo">
-      <h1>Sistema de Tickets</h1>
-      <p style="color:var(--color-muted);margin-top:.25rem">Ingresa tus credenciales</p>
+      <img src="../assets/img/logo.jpg" alt="Logo">
     </div>
 
-    <div v-if="error" class="alert alert-error">{{ error }}</div>
+    <h1 class="login-title">Iniciar sesión</h1>
+    <p class="login-sub">Ingresa con tus credenciales para continuar.</p>
 
-    <form @submit.prevent="login">
+    <div v-if="error" class="login-error">
+      <span>⚠</span> {{ error }}
+    </div>
+
+    <form @submit.prevent="login" class="login-form" novalidate>
       <div class="form-group">
-        <label class="form-label">Correo electrónico</label>
-        <input v-model="form.email" type="email" class="form-control" placeholder="usuario@empresa.com" required autofocus>
+        <label for="email">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          v-model="form.email"
+          placeholder="tucorreo@empresa.com"
+          required
+          autocomplete="email"
+        >
       </div>
+
       <div class="form-group">
-        <label class="form-label">Contraseña</label>
-        <input v-model="form.password" type="password" class="form-control" placeholder="••••••••" required>
+        <label for="password">Contraseña</label>
+        <div class="input-password-wrap">
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            id="password"
+            v-model="form.password"
+            placeholder="••••••••"
+            required
+            autocomplete="current-password"
+          >
+          <button type="button" class="toggle-pass" @click="showPassword = !showPassword" title="Mostrar/ocultar contraseña">
+            <span><i class="fi fi-rs-eye"></i></span>
+          </button>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary" style="width:100%" :disabled="loading">
-        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+
+      <button type="submit" class="btn btn-primary btn-login" :disabled="loading">
+        {{ loading ? 'Ingresando...' : 'Iniciar sesión' }}
       </button>
-    </form>
-  </div>
-</div>
 
-<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-<script src="../assets/js/api.js"></script>
-<script>
-Vue.createApp({
-  data() {
-    return { form: { email: '', password: '' }, error: '', loading: false };
-  },
-  async mounted() {
-    const u = sessionStorage.getItem('usuario');
-    if (u) window.location.href = 'dashboard.html';
-  },
-  methods: {
-    async login() {
-      this.error = '';
-      this.loading = true;
-      try {
-        const res = await api.auth.login(this.form.email, this.form.password);
-        if (res?.success) {
-          sessionStorage.setItem('usuario', JSON.stringify(res.data));
-          window.location.href = 'dashboard.html';
-        } else {
-          this.error = res?.message || 'Credenciales incorrectas';
+      <p class="login-sub-center">¿Aún no tienes cuenta? <a href="register.php">Regístrate aquí</a></p>
+    </form>
+
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script>
+  Vue.createApp({
+    data() {
+      return {
+        form: { email: '', password: '' },
+        error: '',
+        loading: false,
+        showPassword: false,
+      };
+    },
+    async mounted() {
+      const u = sessionStorage.getItem('usuario');
+      if (u) window.location.href = '../index.php';
+    },
+    methods: {
+      async login() {
+        this.error = '';
+        if (!this.form.email || !this.form.password) {
+          this.error = 'Por favor completa todos los campos.';
+          return;
         }
-      } catch {
-        this.error = 'Error de conexión. Intenta de nuevo.';
-      } finally {
-        this.loading = false;
+        this.loading = true;
+        try {
+          const res = await api.auth.login(this.form.email, this.form.password);
+          if (res?.success) {
+            sessionStorage.setItem('usuario', JSON.stringify(res.data));
+            window.location.href = '../index.php';
+          } else {
+            this.error = res?.message || 'Credenciales incorrectas';
+          }
+        } catch {
+          this.error = 'Error de conexión. Intenta de nuevo.';
+        } finally {
+          this.loading = false;
+        }
       }
     }
-  }
-}).mount('#app');
-</script>
+  }).mount('#app');
+  </script>
 </body>
 </html>
