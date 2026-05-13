@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo Ticket — Sistema de Tickets</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="app" class="app-layout" v-cloak>
+
+  <aside class="sidebar">
+    <div style="font-weight:700;font-size:1rem;padding:.5rem .75rem;margin-bottom:.5rem">Tickets</div>
+    <a href="../dashboard.html" class="nav-item">Dashboard</a>
+    <a href="lista.html" class="nav-item">Mis Tickets</a>
+    <a href="crear.html" class="nav-item active">Nuevo Ticket</a>
+    <template v-if="isAdmin">
+      <hr style="border-color:var(--color-border);margin:.5rem 0">
+      <a href="../admin/usuarios.html" class="nav-item">Usuarios</a>
+    </template>
+    <div style="flex:1"></div>
+    <button @click="logout" class="btn btn-outline" style="width:100%">Cerrar sesión</button>
+  </aside>
+
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div class="topbar">
+      <span style="font-weight:600">Nuevo Ticket</span>
+    </div>
+
+    <main class="main-content">
+      <div class="card" style="max-width:640px">
+        <div v-if="success" class="alert alert-success">Ticket creado correctamente. <a href="lista.html">Ver mis tickets</a></div>
+        <div v-if="error"   class="alert alert-error">{{ error }}</div>
+
+        <form @submit.prevent="submit">
+          <div class="form-group">
+            <label class="form-label">Título <span style="color:red">*</span></label>
+            <input v-model="form.titulo" class="form-control" placeholder="Describe brevemente el problema" required maxlength="255">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descripción <span style="color:red">*</span></label>
+            <textarea v-model="form.descripcion" class="form-control" rows="5"
+              placeholder="Describe el problema con detalle: pasos para reproducirlo, mensajes de error, etc." required></textarea>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <div class="form-group">
+              <label class="form-label">Prioridad</label>
+              <select v-model="form.prioridad_id" class="form-control">
+                <option value="1">Baja</option>
+                <option value="2" selected>Media</option>
+                <option value="3">Alta</option>
+                <option value="4">Crítica</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:.75rem;justify-content:flex-end;margin-top:.5rem">
+            <a href="lista.html" class="btn btn-outline">Cancelar</a>
+            <button type="submit" class="btn btn-primary" :disabled="loading">
+              {{ loading ? 'Enviando...' : 'Crear Ticket' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>
+Vue.createApp({
+  data() {
+    return {
+      usuario: null, isAdmin: false,
+      form: { titulo: '', descripcion: '', prioridad_id: '2' },
+      loading: false, error: '', success: false,
+    };
+  },
+  mounted() {
+    Auth.requireAuth();
+    this.usuario = Auth.getUsuario();
+    this.isAdmin = Auth.isAdmin();
+  },
+  methods: {
+    async submit() {
+      this.error = ''; this.loading = true;
+      const res = await api.tickets.create(this.form);
+      this.loading = false;
+      if (res?.success) {
+        this.success = true;
+        this.form = { titulo: '', descripcion: '', prioridad_id: '2' };
+        setTimeout(() => window.location.href = 'lista.html', 1500);
+      } else {
+        this.error = res?.message || 'Error al crear el ticket';
+      }
+    },
+    logout() { Auth.logout(); },
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
