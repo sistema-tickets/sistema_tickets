@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Sistema de Tickets</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="app" class="app-layout" v-cloak>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div style="font-weight:700;font-size:1rem;padding:.5rem .75rem;margin-bottom:.5rem">
+      Tickets
+    </div>
+    <a href="dashboard.html" class="nav-item active">Dashboard</a>
+    <a href="tickets/lista.html" class="nav-item">Mis Tickets</a>
+    <a href="tickets/crear.html" class="nav-item">Nuevo Ticket</a>
+    <template v-if="isAdmin">
+      <hr style="border-color:var(--color-border);margin:.5rem 0">
+      <a href="admin/usuarios.html" class="nav-item">Usuarios</a>
+    </template>
+    <div style="flex:1"></div>
+    <button @click="logout" class="btn btn-outline" style="width:100%">Cerrar sesión</button>
+  </aside>
+
+  <!-- Main -->
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div class="topbar">
+      <span style="font-weight:600">Bienvenido, {{ usuario?.nombre }}</span>
+      <span class="badge badge-blue">{{ isAdmin ? 'Administrador' : 'Usuario' }}</span>
+    </div>
+
+    <main class="main-content">
+      <h2 style="margin-bottom:1.5rem">Resumen</h2>
+
+      <div v-if="loading" style="color:var(--color-muted)">Cargando...</div>
+
+      <template v-else>
+        <div class="stats-grid" style="margin-bottom:2rem">
+          <div class="card stat-card" v-for="s in stats" :key="s.estado">
+            <div class="value">{{ s.total }}</div>
+            <div class="label">{{ s.estado }}</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Tickets recientes</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th><th>Título</th><th>Estado</th><th>Prioridad</th><th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="t in tickets" :key="t.id" style="cursor:pointer"
+                    @click="window.location.href='tickets/detalle.html?id='+t.id">
+                  <td>{{ t.id }}</td>
+                  <td>{{ t.titulo }}</td>
+                  <td><span :class="'badge badge-' + estadoColor(t.estado)">{{ t.estado }}</span></td>
+                  <td><span :class="'badge badge-' + prioridadColor(t.prioridad)">{{ t.prioridad }}</span></td>
+                  <td>{{ formatDate(t.created_at) }}</td>
+                </tr>
+                <tr v-if="!tickets.length">
+                  <td colspan="5" style="text-align:center;color:var(--color-muted)">Sin tickets</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </template>
+    </main>
+  </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>
+const ESTADO_COLORES    = {1:'gray',2:'blue',3:'yellow',4:'green',5:'orange',6:'purple',7:'teal',8:'dark',9:'red'};
+const PRIORIDAD_COLORES = {1:'green',2:'yellow',3:'orange',4:'red'};
+const ESTADO_IDS  = {'En espera':1,'En proceso':2,'Esperando respuesta':3,'Contestado':4,'Reabierto':5,'Reprogramado':6,'Atendido':7,'Cerrado':8,'Rechazado':9};
+const PRIORIDAD_IDS = {'Baja':1,'Media':2,'Alta':3,'Crítica':4};
+
+Vue.createApp({
+  data() {
+    return { usuario: null, isAdmin: false, stats: [], tickets: [], loading: true };
+  },
+  async mounted() {
+    Auth.requireAuth();
+    this.usuario = Auth.getUsuario();
+    this.isAdmin = Auth.isAdmin();
+    await this.load();
+  },
+  methods: {
+    async load() {
+      this.loading = true;
+      const [t, s] = await Promise.all([
+        api.tickets.list({ limit: 10 }),
+        this.isAdmin ? api.tickets.stats() : Promise.resolve(null),
+      ]);
+      this.tickets = t?.data?.tickets ?? [];
+      this.stats   = s?.data ?? [];
+      this.loading = false;
+    },
+    estadoColor(nombre)    { return ESTADO_COLORES[ESTADO_IDS[nombre]] ?? 'gray'; },
+    prioridadColor(nombre) { return PRIORIDAD_COLORES[PRIORIDAD_IDS[nombre]] ?? 'gray'; },
+    formatDate(d) { return new Date(d).toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric' }); },
+    logout() { Auth.logout(); },
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
