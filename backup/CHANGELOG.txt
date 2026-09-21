@@ -1,0 +1,187 @@
+================================================================================
+  SISTEMA DE TICKETS — TABASCO OC LLC
+  Bitácora de versiones / Backup Changelog
+================================================================================
+
+Formato de versiones:
+  backup/vN/   → Código fuente completo del proyecto en ese punto
+  backup/vN/bd_tickets_vN_dump.sql  → Volcado completo de BD con datos
+
+--------------------------------------------------------------------------------
+VERSIÓN 1  |  2026-05-29  |  Rama git: lina
+--------------------------------------------------------------------------------
+Archivos:   backup/v1/  (259 archivos, ~52 MB)
+Base datos: backup/v1/bd_tickets_v1_dump.sql  (~5.5 MB, MariaDB 10.4)
+
+DESCRIPCIÓN GENERAL
+  Primera versión estable del sistema con autenticación PHP, vista de usuario
+  y vista de administrador/coordinador funcional. Diseño corporativo para
+  Tabasco OC LLC — Área de TI (Sistemas + Desarrollo).
+
+CAMBIOS INCLUIDOS EN ESTA VERSIÓN
+
+  [UI — Header]
+  - Eliminado breadcrumb "Service Desk / Tickets" del navbar superior.
+  - Eliminada barra de búsqueda del header; ahora vive en el área de contenido.
+  - Header simplificado: solo toggle de sidebar y chip de usuario (nombre, rol,
+    logout) en el extremo derecho.
+
+  [UI — Sidebar]
+  - Sección "Historial" movida al tope del nav, por encima de "Mesa de Servicio".
+  - Eliminada sección "Análisis" (Dashboard, Reportes SLA, Sitios y catálogos).
+  - Eliminado ítem "Tipo de solicitudes" de Mesa de Servicio.
+  - Eliminado ítem "Estado" de Mesa de Servicio.
+  - Eliminado ítem "Crear ticket" del sidebar.
+  - Eliminada sección "Filtros avanzados" colapsable del sidebar.
+  - Eliminado bloque de usuario al pie del sidebar (redundante con navbar).
+  - Añadido bloque de resumen "N tickets · Turno AM/PM" entre el brand y la nav,
+    con tipografía discreta (11px, gris, sin protagonismo).
+
+  [UI — Área de contenido / index.php]
+  - Suprimida la barra de título grande "Sistema de Incidencia y Requerimiento".
+  - Turno calculado dinámicamente: "AM" si hora < 12, "PM" en caso contrario.
+    Reemplaza el texto fijo "Vespertino".
+  - KPI Cards ahora visibles para todos los roles:
+      · Admin/Superadmin: 4 tarjetas con sparkline (Total, Abiertos, En proceso,
+        SLA en riesgo).
+      · Usuario normal: 4 tarjetas simples (Total mis tickets, Abiertos,
+        En proceso, Resueltos) usando .kpi-user-grid.
+  - Barra de filtros inline (debajo de KPIs): búsqueda + selectores de Estado,
+    Prioridad, Tipo, Asignado a (solo admin) + campos de fecha + botón Filtrar
+    + botón Limpiar. Todo en un solo formulario en el contenido.
+  - Eliminada la barra de tabs "Todos / Abiertos / En proceso / Cerrados".
+  - Eliminado contador "Mostrando X–Y de Z".
+  - Botón "Nuevo ticket" + botones "Ordenar" y "Columnas" integrados dentro del
+    div .filter-chips-bar, alineados a la derecha con .chips-bar-actions.
+  - Eliminadas secciones "Actividad reciente" y "Distribución por línea de
+    negocio" (HTML y queries PHP correspondientes).
+  - Añadido padding-top: 16px al área de contenido para separación con navbar.
+
+  [BD — Sin cambios de esquema]
+  - El dump incluye datos existentes tal como están en desarrollo.
+  - Sin migraciones nuevas en esta versión.
+
+ESTADO DEL PROYECTO
+  - Autenticación PHP (sesiones) funcional.
+  - Formulario crear ticket operativo (usuario y admin), con Quill.js y adjuntos.
+  - Detalle de ticket con historial timeline, respuestas y adjuntos.
+  - Filtrado server-side (estado, prioridad, tipo, admin, fechas, búsqueda libre).
+  - Paginación: 7 tickets por página.
+  - SLA: badges ok / en_riesgo / vencido calculados en tiempo real.
+  - Rama git: lina (pendiente merge a main).
+
+--------------------------------------------------------------------------------
+VERSIÓN 2  |  2026-06-05  |  Rama git: lina
+--------------------------------------------------------------------------------
+Archivos:   backup/v2/  (261 archivos)
+Base datos: backup/v2/bd_tickets_v2_dump.sql  (~5.41 MB, MariaDB)
+
+DESCRIPCION GENERAL
+  Correcciones de errores en creacion de tickets y nuevos controladores/modelos
+  para catalogos y dashboard. Migraciones de BD aplicadas (celular, sitios,
+  lineas de negocio, superadmin, lugar de incidencia).
+
+CAMBIOS INCLUIDOS EN ESTA VERSION
+
+  [BD — Migraciones aplicadas]
+  - migration_celular.sql: columna celular varchar(20) agregada a tickets.
+  - migration_limpiar_sitios.sql: limpieza de registros en sitios.
+  - migration_linea_negocio_usuarios.sql: relacion linea de negocio en usuarios.
+  - migration_lineas_negocios.sql: actualizacion de lineas de negocio.
+  - migration_lugar_incidencia.sql: campo lugar_incidencia en tickets.
+  - migration_superadmin.sql: rol superadmin (id=3) y permisos.
+
+  [BD — Triggers]
+  - Eliminado trigger trg_tickets_numero (AFTER INSERT en tickets).
+    Causa: MySQL no permite UPDATE sobre la misma tabla que disparo el trigger.
+    La generacion del numero_ticket (TKT-NNNNN) ya era manejada por PHP
+    en TicketModel::create() con MAX(id)+1 antes del INSERT.
+
+  [Backend — Nuevos controladores y modelos]
+  - CatalogoController.php: endpoints para gestion de catalogos.
+  - DashboardController.php: endpoints para estadisticas del dashboard.
+  - DashboardModel.php: queries de metricas y KPIs para el dashboard.
+
+  [Backend — Ajustes generales]
+  - Actualizados AuthController, TicketController, UsuarioController.
+  - Actualizado TicketModel con soporte a columna celular en INSERT.
+  - Actualizado UsuarioModel.
+  - Ajustes en Auth.php (middleware), Response.php, constants.php.
+
+  [Base de datos — Versiones historicas organizadas]
+  - Scripts SQL organizados en subcarpetas database/v1/, v2/, v3/, v4/.
+  - Migraciones individuales en database/migration_*.sql.
+  - database/v3/views.sql y database/v3/migration_v2_v3.sql agregados.
+
+ESTADO DEL PROYECTO
+  - Autenticacion PHP (sesiones) funcional.
+  - Creacion de tickets operativa (error de columna celular y trigger corregidos).
+  - Formulario crear ticket con Quill.js y adjuntos.
+  - Detalle de ticket con historial timeline, respuestas y adjuntos.
+  - Filtrado server-side (estado, prioridad, tipo, admin, fechas, busqueda).
+  - Paginacion: 7 tickets por pagina.
+  - SLA: badges ok / en_riesgo / vencido calculados en tiempo real.
+  - Rama git: lina (pendiente merge a main).
+
+--------------------------------------------------------------------------------
+VERSION 3  |  2026-06-05  |  Rama git: lina
+--------------------------------------------------------------------------------
+Archivos:   backup/v3/  (261 archivos)
+Base datos: backup/v3/bd_tickets_v3_dump.sql  (~5.41 MB, MariaDB)
+
+DESCRIPCION GENERAL
+  Rediseno profesional de los modales "Crear ticket" y "Detalle de ticket".
+  Ambos overlays ahora comparten un header de marca azul consistente con el
+  resto del sistema, mejor tipografia, inputs con mas respiro y zona de carga
+  de archivos estilizada (dropzone).
+
+CAMBIOS INCLUIDOS EN ESTA VERSION
+
+  [UI — Modal Crear ticket]
+  - Fondo de la card cambiado de gris (#d6d6d6) a blanco (#ffffff) con sombra.
+  - Nuevo header de marca (.crear-modal-header): franja azul degradada con
+    icono de ticket, titulo, subtitulo y boton X integrados.
+  - Inputs con mayor padding (9px 12px), border-radius 8px y borde 1.5px.
+  - Labels de campo aumentados a 12px con letter-spacing.
+  - Zona de carga de archivos rediseada como dropzone dashed con icono de
+    nube. Cambia a verde cuando hay archivos seleccionados.
+  - Boton "Enviar solicitud" / "Guardar y publicar" ahora es ancho completo,
+    azul degradado con sombra e icono.
+  - Mensajes de exito/error con icono y padding lateral consistente.
+
+  [UI — Modal Detalle de ticket]
+  - Mismo header de marca azul con numero de ticket y boton X integrado.
+  - Todo el contenido envuelto en .detalle-body con padding lateral (24px).
+  - Campo Celular ahora muestra el valor real del ticket (antes siempre "--").
+  - Form de gestion admin usa clase .crear-form para consistencia de estilos.
+  - Estado y prioridad del ticket mostrados como badges inline con la fecha.
+  - Botones de accion con iconos (floppy-disk, paper-plane, cloud-arrow-up).
+
+  [CSS — main.css]
+  - Nuevas clases: .crear-modal-header, .cmh-icon, .cmh-text, .detalle-body,
+    .upload-zone, .upload-zone-icon, .upload-zone-text, .upload-zone-hint.
+  - .file-label-row ocultada (display:none) — reemplazada por upload-zone.
+  - .file-btn-label actualizada a color azul de marca.
+  - Responsive actualizado para los nuevos componentes (<768px y <480px).
+
+  [BD — Sin cambios de esquema]
+  - El dump incluye los datos existentes al momento del respaldo.
+
+ESTADO DEL PROYECTO
+  - Autenticacion PHP funcional.
+  - Creacion de tickets operativa con dropzone de archivos.
+  - Detalle de ticket con header de marca, historial timeline y adjuntos.
+  - Filtrado server-side completo con chips removibles.
+  - Paginacion 7 tickets por pagina.
+  - SLA: badges ok / en_riesgo / vencido en tiempo real.
+  - Rama git: lina (pendiente merge a main).
+
+--------------------------------------------------------------------------------
+PROXIMA VERSION (planificada)
+--------------------------------------------------------------------------------
+  - Vista dedicada de historial de tickets para usuario.
+  - Sistema de notificaciones en tiempo real.
+  - Dashboard analitico para administradores.
+  - Gestion de catalogos desde la interfaz.
+
+================================================================================

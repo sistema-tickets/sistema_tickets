@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tickets — Sistema de Tickets</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="app" class="app-layout" v-cloak>
+
+  <aside class="sidebar">
+    <div style="font-weight:700;font-size:1rem;padding:.5rem .75rem;margin-bottom:.5rem">Tickets</div>
+    <a href="../dashboard.html" class="nav-item">Dashboard</a>
+    <a href="lista.html" class="nav-item active">Mis Tickets</a>
+    <a href="crear.html" class="nav-item">Nuevo Ticket</a>
+    <template v-if="isAdmin">
+      <hr style="border-color:var(--color-border);margin:.5rem 0">
+      <a href="../admin/usuarios.html" class="nav-item">Usuarios</a>
+    </template>
+    <div style="flex:1"></div>
+    <button @click="logout" class="btn btn-outline" style="width:100%">Cerrar sesión</button>
+  </aside>
+
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div class="topbar">
+      <span style="font-weight:600">Tickets</span>
+      <a href="crear.html" class="btn btn-primary">+ Nuevo ticket</a>
+    </div>
+
+    <main class="main-content">
+
+      <!-- Filtros -->
+      <div class="card" style="margin-bottom:1rem;padding:1rem">
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <input v-model="filters.busqueda" @input="debouncedLoad" class="form-control" placeholder="Buscar..." style="max-width:240px">
+          <select v-model="filters.estado_id" @change="load()" class="form-control" style="max-width:160px">
+            <option value="">Todos los estados</option>
+            <option v-for="e in estados" :value="e.id">{{ e.nombre }}</option>
+          </select>
+          <select v-model="filters.prioridad_id" @change="load()" class="form-control" style="max-width:160px">
+            <option value="">Todas las prioridades</option>
+            <option value="1">Baja</option>
+            <option value="2">Media</option>
+            <option value="3">Alta</option>
+            <option value="4">Crítica</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div v-if="loading" style="color:var(--color-muted);padding:1rem">Cargando...</div>
+        <div v-else>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>#</th><th>Título</th><th>Estado</th><th>Prioridad</th><th>Asignado a</th><th>Fecha</th></tr>
+              </thead>
+              <tbody>
+                <tr v-for="t in tickets" :key="t.id" style="cursor:pointer"
+                    @click="$router ? null : (window.location.href='detalle.html?id='+t.id)">
+                  <td>{{ t.id }}</td>
+                  <td>{{ t.titulo }}</td>
+                  <td><span :class="'badge badge-'+estadoColor(t.estado)">{{ t.estado }}</span></td>
+                  <td><span :class="'badge badge-'+prioridadColor(t.prioridad)">{{ t.prioridad }}</span></td>
+                  <td>{{ t.asignado_a_nombre || '—' }}</td>
+                  <td>{{ formatDate(t.created_at) }}</td>
+                </tr>
+                <tr v-if="!tickets.length">
+                  <td colspan="6" style="text-align:center;color:var(--color-muted)">No hay tickets</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <button class="page-btn" :disabled="page===1" @click="page--;load()">‹</button>
+            <span style="font-size:.875rem">Página {{ page }} / {{ totalPages }}</span>
+            <button class="page-btn" :disabled="page>=totalPages" @click="page++;load()">›</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>
+const ESTADO_COLORES    = {1:'gray',2:'blue',3:'yellow',4:'green',5:'orange',6:'purple',7:'teal',8:'dark',9:'red'};
+const PRIORIDAD_COLORES = {1:'green',2:'yellow',3:'orange',4:'red'};
+const ESTADO_IDS  = {'En espera':1,'En proceso':2,'Esperando respuesta':3,'Contestado':4,'Reabierto':5,'Reprogramado':6,'Atendido':7,'Cerrado':8,'Rechazado':9};
+const PRIORIDAD_IDS = {'Baja':1,'Media':2,'Alta':3,'Crítica':4};
+
+Vue.createApp({
+  data() {
+    return {
+      usuario: null, isAdmin: false,
+      tickets: [], loading: true,
+      page: 1, totalPages: 1,
+      filters: { busqueda: '', estado_id: '', prioridad_id: '' },
+      estados: [
+        {id:1,nombre:'En espera'},{id:2,nombre:'En proceso'},{id:3,nombre:'Esperando respuesta'},
+        {id:4,nombre:'Contestado'},{id:5,nombre:'Reabierto'},{id:6,nombre:'Reprogramado'},
+        {id:7,nombre:'Atendido'},{id:8,nombre:'Cerrado'},{id:9,nombre:'Rechazado'},
+      ],
+      _timer: null,
+    };
+  },
+  async mounted() {
+    Auth.requireAuth();
+    this.usuario = Auth.getUsuario();
+    this.isAdmin = Auth.isAdmin();
+    await this.load();
+  },
+  methods: {
+    async load() {
+      this.loading = true;
+      const params = { page: this.page, limit: 20, ...this.filters };
+      Object.keys(params).forEach(k => !params[k] && delete params[k]);
+      const res = await api.tickets.list(params);
+      this.tickets    = res?.data?.tickets ?? [];
+      this.totalPages = res?.data?.total_pages ?? 1;
+      this.loading = false;
+    },
+    debouncedLoad() {
+      clearTimeout(this._timer);
+      this._timer = setTimeout(() => { this.page = 1; this.load(); }, 400);
+    },
+    estadoColor(n)    { return ESTADO_COLORES[ESTADO_IDS[n]] ?? 'gray'; },
+    prioridadColor(n) { return PRIORIDAD_COLORES[PRIORIDAD_IDS[n]] ?? 'gray'; },
+    formatDate(d) { return new Date(d).toLocaleDateString('es-CO', {day:'2-digit',month:'short',year:'numeric'}); },
+    logout() { Auth.logout(); },
+  }
+}).mount('#app');
+</script>
+</body>
+</html>

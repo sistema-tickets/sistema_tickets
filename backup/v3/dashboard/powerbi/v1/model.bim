@@ -1,0 +1,509 @@
+{
+  "name": "Model",
+  "compatibilityLevel": 1567,
+  "model": {
+    "culture": "es-CO",
+    "dataAccessOptions": { "legacyRedirects": true, "returnErrorValuesAsNull": true },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+
+    "expressions": [
+      {
+        "name": "Origen",
+        "kind": "m",
+        "expression": [
+          "let",
+          "    Source = Odbc.DataSource(\"dsn=LOCAL\", [HierarchicalNavigation=true]),",
+          "    Db     = Source{[Name=\"bd_tickets\",Kind=\"Database\"]}[Data]",
+          "in  Db"
+        ],
+        "lineageTag": "a1b2c3d4-0001-0001-0001-000000000001"
+      }
+    ],
+
+    "tables": [
+
+      {
+        "name": "tickets",
+        "lineageTag": "a1b2c3d4-0002-0002-0002-000000000002",
+        "partitions": [{
+          "name": "tickets-part",
+          "mode": "import",
+          "source": {
+            "type": "m",
+            "expression": [
+              "let",
+              "    Tbl = Origen{[Name=\"tickets\",Kind=\"Table\"]}[Data]",
+              "in  Tbl"
+            ]
+          }
+        }],
+        "columns": [
+          {"name":"id",               "dataType":"int64",    "sourceColumn":"id",               "lineageTag":"c0001"},
+          {"name":"numero_ticket",    "dataType":"string",   "sourceColumn":"numero_ticket",    "lineageTag":"c0002"},
+          {"name":"descripcion",      "dataType":"string",   "sourceColumn":"descripcion",      "lineageTag":"c0003"},
+          {"name":"usuario_id",       "dataType":"int64",    "sourceColumn":"usuario_id",       "lineageTag":"c0004"},
+          {"name":"tipo_solicitud_id","dataType":"int64",    "sourceColumn":"tipo_solicitud_id","lineageTag":"c0005"},
+          {"name":"asunto_id",        "dataType":"int64",    "sourceColumn":"asunto_id",        "lineageTag":"c0006"},
+          {"name":"sitio_id",         "dataType":"int64",    "sourceColumn":"sitio_id",         "lineageTag":"c0007"},
+          {"name":"linea_negocio_id", "dataType":"int64",    "sourceColumn":"linea_negocio_id", "lineageTag":"c0008"},
+          {"name":"genera_gasto",     "dataType":"int64",    "sourceColumn":"genera_gasto",     "lineageTag":"c0009"},
+          {"name":"prioridad_id",     "dataType":"int64",    "sourceColumn":"prioridad_id",     "lineageTag":"c0010"},
+          {"name":"admin_id",         "dataType":"int64",    "sourceColumn":"admin_id",         "lineageTag":"c0011"},
+          {"name":"estado_id",        "dataType":"int64",    "sourceColumn":"estado_id",        "lineageTag":"c0012"},
+          {"name":"solucion",         "dataType":"string",   "sourceColumn":"solucion",         "lineageTag":"c0013"},
+          {"name":"created_at",       "dataType":"dateTime", "sourceColumn":"created_at",       "lineageTag":"c0014"},
+          {"name":"updated_at",       "dataType":"dateTime", "sourceColumn":"updated_at",       "lineageTag":"c0015"},
+          {"name":"closed_at",        "dataType":"dateTime", "sourceColumn":"closed_at",        "lineageTag":"c0016"}
+        ]
+      },
+
+      {
+        "name": "estados",
+        "lineageTag": "a1b2c3d4-0003-0003-0003-000000000003",
+        "partitions": [{"name":"estados-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"estados\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",             "dataType":"int64",  "sourceColumn":"id",             "lineageTag":"c0101"},
+          {"name":"nombre",         "dataType":"string", "sourceColumn":"nombre",         "lineageTag":"c0102"},
+          {"name":"es_terminal",    "dataType":"int64",  "sourceColumn":"es_terminal",    "lineageTag":"c0103"},
+          {"name":"permite_reabrir","dataType":"int64",  "sourceColumn":"permite_reabrir","lineageTag":"c0104"}
+        ]
+      },
+
+      {
+        "name": "prioridades",
+        "lineageTag": "a1b2c3d4-0004-0004-0004-000000000004",
+        "partitions": [{"name":"prioridades-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"prioridades\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",    "dataType":"int64",  "sourceColumn":"id",    "lineageTag":"c0201"},
+          {"name":"nombre","dataType":"string", "sourceColumn":"nombre","lineageTag":"c0202"},
+          {"name":"orden", "dataType":"int64",  "sourceColumn":"orden", "lineageTag":"c0203"}
+        ]
+      },
+
+      {
+        "name": "tipos_asunto",
+        "lineageTag": "a1b2c3d4-0005-0005-0005-000000000005",
+        "partitions": [{"name":"tipos_asunto-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"tipos_asunto\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",    "dataType":"int64",  "sourceColumn":"id",    "lineageTag":"c0301"},
+          {"name":"nombre","dataType":"string", "sourceColumn":"nombre","lineageTag":"c0302"}
+        ]
+      },
+
+      {
+        "name": "tipos_solicitud",
+        "lineageTag": "a1b2c3d4-0006-0006-0006-000000000006",
+        "partitions": [{"name":"tipos_solicitud-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"tipos_solicitud\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",    "dataType":"int64",  "sourceColumn":"id",    "lineageTag":"c0401"},
+          {"name":"nombre","dataType":"string", "sourceColumn":"nombre","lineageTag":"c0402"}
+        ]
+      },
+
+      {
+        "name": "regiones",
+        "lineageTag": "a1b2c3d4-0007-0007-0007-000000000007",
+        "partitions": [{"name":"regiones-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"regiones\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",    "dataType":"int64",  "sourceColumn":"id",    "lineageTag":"c0501"},
+          {"name":"codigo","dataType":"string", "sourceColumn":"codigo","lineageTag":"c0502"},
+          {"name":"nombre","dataType":"string", "sourceColumn":"nombre","lineageTag":"c0503"}
+        ]
+      },
+
+      {
+        "name": "sitios",
+        "lineageTag": "a1b2c3d4-0008-0008-0008-000000000008",
+        "partitions": [{"name":"sitios-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"sitios\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",       "dataType":"int64",  "sourceColumn":"id",       "lineageTag":"c0601"},
+          {"name":"region_id","dataType":"int64",  "sourceColumn":"region_id","lineageTag":"c0602"},
+          {"name":"nombre",   "dataType":"string", "sourceColumn":"nombre",   "lineageTag":"c0603"}
+        ]
+      },
+
+      {
+        "name": "lineas_negocio",
+        "lineageTag": "a1b2c3d4-0009-0009-0009-000000000009",
+        "partitions": [{"name":"lineas_negocio-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"lineas_negocio\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",    "dataType":"int64",  "sourceColumn":"id",    "lineageTag":"c0701"},
+          {"name":"nombre","dataType":"string", "sourceColumn":"nombre","lineageTag":"c0702"},
+          {"name":"activo","dataType":"int64",  "sourceColumn":"activo","lineageTag":"c0703"}
+        ]
+      },
+
+      {
+        "name": "asuntos",
+        "lineageTag": "a1b2c3d4-0010-0010-0010-000000000010",
+        "partitions": [{"name":"asuntos-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"asuntos\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",                  "dataType":"int64",   "sourceColumn":"id",                  "lineageTag":"c0801"},
+          {"name":"tipo_asunto_id",      "dataType":"int64",   "sourceColumn":"tipo_asunto_id",      "lineageTag":"c0802"},
+          {"name":"prioridad_default_id","dataType":"int64",   "sourceColumn":"prioridad_default_id","lineageTag":"c0803"},
+          {"name":"nombre",              "dataType":"string",  "sourceColumn":"nombre",              "lineageTag":"c0804"},
+          {"name":"horas_respuesta",     "dataType":"decimal", "sourceColumn":"horas_respuesta",     "lineageTag":"c0805"},
+          {"name":"horas_resolucion",    "dataType":"decimal", "sourceColumn":"horas_resolucion",    "lineageTag":"c0806"}
+        ]
+      },
+
+      {
+        "name": "sla_configuracion",
+        "lineageTag": "a1b2c3d4-0011-0011-0011-000000000011",
+        "partitions": [{"name":"sla_conf-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"sla_configuracion\",Kind=\"Table\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"id",              "dataType":"int64",   "sourceColumn":"id",              "lineageTag":"c0901"},
+          {"name":"prioridad_id",    "dataType":"int64",   "sourceColumn":"prioridad_id",    "lineageTag":"c0902"},
+          {"name":"horas_respuesta", "dataType":"decimal", "sourceColumn":"horas_respuesta", "lineageTag":"c0903"},
+          {"name":"horas_resolucion","dataType":"decimal", "sourceColumn":"horas_resolucion","lineageTag":"c0904"},
+          {"name":"activo",          "dataType":"int64",   "sourceColumn":"activo",          "lineageTag":"c0905"}
+        ]
+      },
+
+      {
+        "name": "Solicitantes",
+        "lineageTag": "a1b2c3d4-0012-0012-0012-000000000012",
+        "partitions": [{
+          "name": "Solicitantes-part",
+          "mode": "import",
+          "source": {
+            "type": "m",
+            "expression": [
+              "let",
+              "    Tbl = Origen{[Name=\"usuarios\",Kind=\"Table\"]}[Data]",
+              "in  Tbl"
+            ]
+          }
+        }],
+        "columns": [
+          {"name":"id",         "dataType":"int64",    "sourceColumn":"id",          "lineageTag":"c1001"},
+          {"name":"nombre",     "dataType":"string",   "sourceColumn":"nombre",      "lineageTag":"c1002"},
+          {"name":"email",      "dataType":"string",   "sourceColumn":"email",       "lineageTag":"c1003"},
+          {"name":"rol_id",     "dataType":"int64",    "sourceColumn":"rol_id",      "lineageTag":"c1004"},
+          {"name":"sitio_id",   "dataType":"int64",    "sourceColumn":"sitio_id",    "lineageTag":"c1005"},
+          {"name":"activo",     "dataType":"int64",    "sourceColumn":"activo",      "lineageTag":"c1006"},
+          {"name":"ultimo_login","dataType":"dateTime","sourceColumn":"ultimo_login","lineageTag":"c1007"}
+        ]
+      },
+
+      {
+        "name": "Administradores",
+        "lineageTag": "a1b2c3d4-0013-0013-0013-000000000013",
+        "partitions": [{
+          "name": "Administradores-part",
+          "mode": "import",
+          "source": {
+            "type": "m",
+            "expression": [
+              "let",
+              "    Tbl      = Origen{[Name=\"usuarios\",Kind=\"Table\"]}[Data],",
+              "    Admins   = Table.SelectRows(Tbl, each [rol_id] = 2)",
+              "in  Admins"
+            ]
+          }
+        }],
+        "columns": [
+          {"name":"id",    "dataType":"int64",  "sourceColumn":"id",    "lineageTag":"c1101"},
+          {"name":"nombre","dataType":"string", "sourceColumn":"nombre","lineageTag":"c1102"},
+          {"name":"email", "dataType":"string", "sourceColumn":"email", "lineageTag":"c1103"},
+          {"name":"activo","dataType":"int64",  "sourceColumn":"activo","lineageTag":"c1104"}
+        ]
+      },
+
+      {
+        "name": "v_tickets_pendientes",
+        "lineageTag": "a1b2c3d4-0014-0014-0014-000000000014",
+        "partitions": [{"name":"vtp-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_tickets_pendientes\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"ticket_id",            "dataType":"int64",   "sourceColumn":"ticket_id",            "lineageTag":"c1201"},
+          {"name":"numero_ticket",         "dataType":"string",  "sourceColumn":"numero_ticket",         "lineageTag":"c1202"},
+          {"name":"descripcion",           "dataType":"string",  "sourceColumn":"descripcion",           "lineageTag":"c1203"},
+          {"name":"estado_actual",         "dataType":"string",  "sourceColumn":"estado_actual",         "lineageTag":"c1204"},
+          {"name":"prioridad",             "dataType":"string",  "sourceColumn":"prioridad",             "lineageTag":"c1205"},
+          {"name":"usuario",               "dataType":"string",  "sourceColumn":"usuario",               "lineageTag":"c1206"},
+          {"name":"admin_asignado",        "dataType":"string",  "sourceColumn":"admin_asignado",        "lineageTag":"c1207"},
+          {"name":"sitio",                 "dataType":"string",  "sourceColumn":"sitio",                 "lineageTag":"c1208"},
+          {"name":"linea_negocio",         "dataType":"string",  "sourceColumn":"linea_negocio",         "lineageTag":"c1209"},
+          {"name":"asunto",                "dataType":"string",  "sourceColumn":"asunto",                "lineageTag":"c1210"},
+          {"name":"tipo_solicitud",        "dataType":"string",  "sourceColumn":"tipo_solicitud",        "lineageTag":"c1211"},
+          {"name":"genera_gasto",          "dataType":"int64",   "sourceColumn":"genera_gasto",          "lineageTag":"c1212"},
+          {"name":"horas_desde_creacion",  "dataType":"decimal", "sourceColumn":"horas_desde_creacion",  "lineageTag":"c1213"},
+          {"name":"sla_horas_limite",      "dataType":"decimal", "sourceColumn":"sla_horas_limite",      "lineageTag":"c1214"},
+          {"name":"sla_horas_respuesta",   "dataType":"decimal", "sourceColumn":"sla_horas_respuesta",   "lineageTag":"c1215"},
+          {"name":"sla_horas_restantes",   "dataType":"decimal", "sourceColumn":"sla_horas_restantes",   "lineageTag":"c1216"},
+          {"name":"pct_sla_consumido",     "dataType":"decimal", "sourceColumn":"pct_sla_consumido",     "lineageTag":"c1217"},
+          {"name":"sla_estado",            "dataType":"string",  "sourceColumn":"sla_estado",            "lineageTag":"c1218"},
+          {"name":"desde_estado_actual",   "dataType":"dateTime","sourceColumn":"desde_estado_actual",   "lineageTag":"c1219"}
+        ]
+      },
+
+      {
+        "name": "v_sla_cumplimiento",
+        "lineageTag": "a1b2c3d4-0015-0015-0015-000000000015",
+        "partitions": [{"name":"vsc-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_sla_cumplimiento\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"ticket_id",         "dataType":"int64",    "sourceColumn":"ticket_id",         "lineageTag":"c1301"},
+          {"name":"numero_ticket",      "dataType":"string",   "sourceColumn":"numero_ticket",      "lineageTag":"c1302"},
+          {"name":"fecha_creacion",     "dataType":"dateTime", "sourceColumn":"fecha_creacion",     "lineageTag":"c1303"},
+          {"name":"fecha_cierre",       "dataType":"dateTime", "sourceColumn":"fecha_cierre",       "lineageTag":"c1304"},
+          {"name":"usuario",            "dataType":"string",   "sourceColumn":"usuario",            "lineageTag":"c1305"},
+          {"name":"admin",              "dataType":"string",   "sourceColumn":"admin",              "lineageTag":"c1306"},
+          {"name":"prioridad",          "dataType":"string",   "sourceColumn":"prioridad",          "lineageTag":"c1307"},
+          {"name":"tipo_asunto",        "dataType":"string",   "sourceColumn":"tipo_asunto",        "lineageTag":"c1308"},
+          {"name":"asunto",             "dataType":"string",   "sourceColumn":"asunto",             "lineageTag":"c1309"},
+          {"name":"tipo_solicitud",     "dataType":"string",   "sourceColumn":"tipo_solicitud",     "lineageTag":"c1310"},
+          {"name":"sla_comprometido_h", "dataType":"decimal",  "sourceColumn":"sla_comprometido_h", "lineageTag":"c1311"},
+          {"name":"horas_reales",       "dataType":"decimal",  "sourceColumn":"horas_reales",       "lineageTag":"c1312"},
+          {"name":"desviacion_h",       "dataType":"decimal",  "sourceColumn":"desviacion_h",       "lineageTag":"c1313"},
+          {"name":"resultado_sla",      "dataType":"string",   "sourceColumn":"resultado_sla",      "lineageTag":"c1314"},
+          {"name":"sitio",              "dataType":"string",   "sourceColumn":"sitio",              "lineageTag":"c1315"},
+          {"name":"linea_negocio",      "dataType":"string",   "sourceColumn":"linea_negocio",      "lineageTag":"c1316"}
+        ]
+      },
+
+      {
+        "name": "v_metricas_admin",
+        "lineageTag": "a1b2c3d4-0016-0016-0016-000000000016",
+        "partitions": [{"name":"vma-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_metricas_admin\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"admin_id",                        "dataType":"int64",   "sourceColumn":"admin_id",                        "lineageTag":"c1401"},
+          {"name":"admin",                           "dataType":"string",  "sourceColumn":"admin",                           "lineageTag":"c1402"},
+          {"name":"total_asignados",                 "dataType":"int64",   "sourceColumn":"total_asignados",                 "lineageTag":"c1403"},
+          {"name":"activos",                         "dataType":"int64",   "sourceColumn":"activos",                         "lineageTag":"c1404"},
+          {"name":"cerrados",                        "dataType":"int64",   "sourceColumn":"cerrados",                        "lineageTag":"c1405"},
+          {"name":"rechazados",                      "dataType":"int64",   "sourceColumn":"rechazados",                      "lineageTag":"c1406"},
+          {"name":"promedio_horas_resolucion",       "dataType":"decimal", "sourceColumn":"promedio_horas_resolucion",       "lineageTag":"c1407"},
+          {"name":"promedio_horas_primera_respuesta","dataType":"decimal", "sourceColumn":"promedio_horas_primera_respuesta","lineageTag":"c1408"},
+          {"name":"dentro_sla",                      "dataType":"int64",   "sourceColumn":"dentro_sla",                      "lineageTag":"c1409"},
+          {"name":"fuera_sla",                       "dataType":"int64",   "sourceColumn":"fuera_sla",                       "lineageTag":"c1410"},
+          {"name":"pct_cumplimiento_sla",            "dataType":"decimal", "sourceColumn":"pct_cumplimiento_sla",            "lineageTag":"c1411"}
+        ]
+      },
+
+      {
+        "name": "v_dash_creados_vs_cerrados",
+        "lineageTag": "a1b2c3d4-0017-0017-0017-000000000017",
+        "partitions": [{"name":"vdcvc-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_dash_creados_vs_cerrados\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"fecha",           "dataType":"dateTime","sourceColumn":"fecha",           "lineageTag":"c1501"},
+          {"name":"tickets_creados", "dataType":"int64",   "sourceColumn":"tickets_creados", "lineageTag":"c1502"},
+          {"name":"tickets_cerrados","dataType":"int64",   "sourceColumn":"tickets_cerrados","lineageTag":"c1503"}
+        ]
+      },
+
+      {
+        "name": "v_dash_por_sitio",
+        "lineageTag": "a1b2c3d4-0018-0018-0018-000000000018",
+        "partitions": [{"name":"vdps-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_dash_por_sitio\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"sitio_id",     "dataType":"int64",  "sourceColumn":"sitio_id",     "lineageTag":"c1601"},
+          {"name":"region",       "dataType":"string", "sourceColumn":"region",       "lineageTag":"c1602"},
+          {"name":"sitio",        "dataType":"string", "sourceColumn":"sitio",        "lineageTag":"c1603"},
+          {"name":"total_tickets","dataType":"int64",  "sourceColumn":"total_tickets","lineageTag":"c1604"},
+          {"name":"activos",      "dataType":"int64",  "sourceColumn":"activos",      "lineageTag":"c1605"},
+          {"name":"cerrados",     "dataType":"int64",  "sourceColumn":"cerrados",     "lineageTag":"c1606"},
+          {"name":"criticos",     "dataType":"int64",  "sourceColumn":"criticos",     "lineageTag":"c1607"}
+        ]
+      },
+
+      {
+        "name": "v_dash_por_linea_negocio",
+        "lineageTag": "a1b2c3d4-0019-0019-0019-000000000019",
+        "partitions": [{"name":"vdpln-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_dash_por_linea_negocio\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"linea_id",              "dataType":"int64",  "sourceColumn":"linea_id",              "lineageTag":"c1701"},
+          {"name":"linea_negocio",         "dataType":"string", "sourceColumn":"linea_negocio",         "lineageTag":"c1702"},
+          {"name":"total_tickets",         "dataType":"int64",  "sourceColumn":"total_tickets",         "lineageTag":"c1703"},
+          {"name":"activos",               "dataType":"int64",  "sourceColumn":"activos",               "lineageTag":"c1704"},
+          {"name":"cerrados",              "dataType":"int64",  "sourceColumn":"cerrados",              "lineageTag":"c1705"},
+          {"name":"alta_prioridad_activos","dataType":"int64",  "sourceColumn":"alta_prioridad_activos","lineageTag":"c1706"}
+        ]
+      },
+
+      {
+        "name": "v_dash_por_tipo_asunto",
+        "lineageTag": "a1b2c3d4-0020-0020-0020-000000000020",
+        "partitions": [{"name":"vdpta-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_dash_por_tipo_asunto\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"tipo_asunto_id","dataType":"int64",   "sourceColumn":"tipo_asunto_id","lineageTag":"c1801"},
+          {"name":"tipo_asunto",   "dataType":"string",  "sourceColumn":"tipo_asunto",   "lineageTag":"c1802"},
+          {"name":"total_tickets", "dataType":"int64",   "sourceColumn":"total_tickets", "lineageTag":"c1803"},
+          {"name":"activos",       "dataType":"int64",   "sourceColumn":"activos",       "lineageTag":"c1804"},
+          {"name":"cerrados",      "dataType":"int64",   "sourceColumn":"cerrados",      "lineageTag":"c1805"},
+          {"name":"pct_del_total", "dataType":"decimal", "sourceColumn":"pct_del_total", "lineageTag":"c1806"}
+        ]
+      },
+
+      {
+        "name": "v_promedio_por_prioridad",
+        "lineageTag": "a1b2c3d4-0021-0021-0021-000000000021",
+        "partitions": [{"name":"vppp-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_promedio_por_prioridad\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"prioridad_id",                    "dataType":"int64",   "sourceColumn":"prioridad_id",                    "lineageTag":"c1901"},
+          {"name":"prioridad",                       "dataType":"string",  "sourceColumn":"prioridad",                       "lineageTag":"c1902"},
+          {"name":"sla_respuesta_h",                 "dataType":"decimal", "sourceColumn":"sla_respuesta_h",                 "lineageTag":"c1903"},
+          {"name":"sla_resolucion_h",                "dataType":"decimal", "sourceColumn":"sla_resolucion_h",                "lineageTag":"c1904"},
+          {"name":"total_tickets",                   "dataType":"int64",   "sourceColumn":"total_tickets",                   "lineageTag":"c1905"},
+          {"name":"promedio_horas_resolucion",       "dataType":"decimal", "sourceColumn":"promedio_horas_resolucion",       "lineageTag":"c1906"},
+          {"name":"promedio_horas_primera_respuesta","dataType":"decimal", "sourceColumn":"promedio_horas_primera_respuesta","lineageTag":"c1907"},
+          {"name":"dentro_sla",                      "dataType":"int64",   "sourceColumn":"dentro_sla",                      "lineageTag":"c1908"},
+          {"name":"fuera_sla",                       "dataType":"int64",   "sourceColumn":"fuera_sla",                       "lineageTag":"c1909"},
+          {"name":"pct_cumplimiento_sla",            "dataType":"decimal", "sourceColumn":"pct_cumplimiento_sla",            "lineageTag":"c1910"}
+        ]
+      },
+
+      {
+        "name": "v_promedio_por_asunto",
+        "lineageTag": "a1b2c3d4-0022-0022-0022-000000000022",
+        "partitions": [{"name":"vppa-part","mode":"import","source":{"type":"m","expression":["let Tbl = Origen{[Name=\"v_promedio_por_asunto\",Kind=\"View\"]}[Data] in Tbl"]}}],
+        "columns": [
+          {"name":"asunto_id",                "dataType":"int64",   "sourceColumn":"asunto_id",                "lineageTag":"c2001"},
+          {"name":"asunto",                   "dataType":"string",  "sourceColumn":"asunto",                   "lineageTag":"c2002"},
+          {"name":"tipo_asunto",              "dataType":"string",  "sourceColumn":"tipo_asunto",              "lineageTag":"c2003"},
+          {"name":"prioridad_default",        "dataType":"string",  "sourceColumn":"prioridad_default",        "lineageTag":"c2004"},
+          {"name":"sla_respuesta_h",          "dataType":"decimal", "sourceColumn":"sla_respuesta_h",          "lineageTag":"c2005"},
+          {"name":"sla_resolucion_h",         "dataType":"decimal", "sourceColumn":"sla_resolucion_h",         "lineageTag":"c2006"},
+          {"name":"total_tickets",            "dataType":"int64",   "sourceColumn":"total_tickets",            "lineageTag":"c2007"},
+          {"name":"promedio_horas_resolucion","dataType":"decimal", "sourceColumn":"promedio_horas_resolucion","lineageTag":"c2008"},
+          {"name":"dentro_sla",               "dataType":"int64",   "sourceColumn":"dentro_sla",               "lineageTag":"c2009"},
+          {"name":"fuera_sla",                "dataType":"int64",   "sourceColumn":"fuera_sla",                "lineageTag":"c2010"},
+          {"name":"pct_cumplimiento_sla",     "dataType":"decimal", "sourceColumn":"pct_cumplimiento_sla",     "lineageTag":"c2011"}
+        ]
+      },
+
+      {
+        "name": "_Medidas",
+        "lineageTag": "a1b2c3d4-0099-0099-0099-000000000099",
+        "partitions": [{
+          "name": "_Medidas-part",
+          "source": { "type": "calculated", "expression": "DATATABLE(\"x\", STRING, {{\"\"}})" }
+        }],
+        "columns": [
+          {"name":"x","dataType":"string","sourceColumn":"[x]","lineageTag":"c9999","isHidden":true}
+        ],
+        "measures": [
+          {
+            "name": "Total Tickets",
+            "expression": "COUNTROWS(tickets)",
+            "formatString": "#,0",
+            "lineageTag": "m0001"
+          },
+          {
+            "name": "Tickets Activos",
+            "expression": "CALCULATE(COUNTROWS(tickets), tickets[estado_id] NOT IN {8, 9})",
+            "formatString": "#,0",
+            "lineageTag": "m0002"
+          },
+          {
+            "name": "Tickets Cerrados",
+            "expression": "CALCULATE(COUNTROWS(tickets), tickets[estado_id] = 8)",
+            "formatString": "#,0",
+            "lineageTag": "m0003"
+          },
+          {
+            "name": "Tickets Rechazados",
+            "expression": "CALCULATE(COUNTROWS(tickets), tickets[estado_id] = 9)",
+            "formatString": "#,0",
+            "lineageTag": "m0004"
+          },
+          {
+            "name": "Sin Asignar",
+            "expression": "CALCULATE(COUNTROWS(tickets), ISBLANK(tickets[admin_id]), tickets[estado_id] NOT IN {8, 9})",
+            "formatString": "#,0",
+            "lineageTag": "m0005"
+          },
+          {
+            "name": "Criticos Activos",
+            "expression": "CALCULATE(COUNTROWS(tickets), tickets[prioridad_id] = 4, tickets[estado_id] NOT IN {8, 9})",
+            "formatString": "#,0",
+            "lineageTag": "m0006"
+          },
+          {
+            "name": "Con Gasto",
+            "expression": "CALCULATE(COUNTROWS(tickets), tickets[genera_gasto] = 1)",
+            "formatString": "#,0",
+            "lineageTag": "m0007"
+          },
+          {
+            "name": "Dentro SLA",
+            "expression": "CALCULATE(COUNTROWS(v_sla_cumplimiento), v_sla_cumplimiento[resultado_sla] = \"dentro_sla\")",
+            "formatString": "#,0",
+            "lineageTag": "m0008"
+          },
+          {
+            "name": "Fuera SLA",
+            "expression": "CALCULATE(COUNTROWS(v_sla_cumplimiento), v_sla_cumplimiento[resultado_sla] = \"fuera_sla\")",
+            "formatString": "#,0",
+            "lineageTag": "m0009"
+          },
+          {
+            "name": "% Cumplimiento SLA",
+            "expression": "DIVIDE([Dentro SLA], [Dentro SLA] + [Fuera SLA], BLANK())",
+            "formatString": "0.0%",
+            "lineageTag": "m0010"
+          },
+          {
+            "name": "Vencidos SLA",
+            "expression": "CALCULATE(COUNTROWS(v_tickets_pendientes), v_tickets_pendientes[sla_estado] = \"vencido\")",
+            "formatString": "#,0",
+            "lineageTag": "m0011"
+          },
+          {
+            "name": "En Riesgo SLA",
+            "expression": "CALCULATE(COUNTROWS(v_tickets_pendientes), v_tickets_pendientes[sla_estado] = \"en_riesgo\")",
+            "formatString": "#,0",
+            "lineageTag": "m0012"
+          },
+          {
+            "name": "Promedio Resolucion h",
+            "expression": "AVERAGEX(FILTER(tickets, tickets[estado_id] = 8 && NOT ISBLANK(tickets[closed_at])), DATEDIFF(tickets[created_at], tickets[closed_at], HOUR))",
+            "formatString": "0.0 \\h",
+            "lineageTag": "m0013"
+          },
+          {
+            "name": "Creados Ultimos 30d",
+            "expression": "CALCULATE([Total Tickets], DATESINPERIOD(tickets[created_at], TODAY(), -30, DAY))",
+            "formatString": "#,0",
+            "lineageTag": "m0014"
+          },
+          {
+            "name": "Cerrados Ultimos 30d",
+            "expression": "CALCULATE([Tickets Cerrados], DATESINPERIOD(tickets[closed_at], TODAY(), -30, DAY))",
+            "formatString": "#,0",
+            "lineageTag": "m0015"
+          },
+          {
+            "name": "Tasa Resolucion",
+            "expression": "DIVIDE([Tickets Cerrados], [Total Tickets], 0)",
+            "formatString": "0.0%",
+            "lineageTag": "m0016"
+          },
+          {
+            "name": "Color SLA",
+            "expression": "SWITCH(SELECTEDVALUE(v_tickets_pendientes[sla_estado]), \"vencido\", \"#DC2626\", \"en_riesgo\", \"#D97706\", \"ok\", \"#16A34A\", \"sin_sla\", \"#94A3B8\", \"#94A3B8\")",
+            "lineageTag": "m0017"
+          }
+        ]
+      }
+
+    ],
+
+    "relationships": [
+      {"name":"r01","fromTable":"tickets","fromColumn":"estado_id",         "toTable":"estados",          "toColumn":"id",          "lineageTag":"r0001"},
+      {"name":"r02","fromTable":"tickets","fromColumn":"prioridad_id",       "toTable":"prioridades",      "toColumn":"id",          "lineageTag":"r0002"},
+      {"name":"r03","fromTable":"tickets","fromColumn":"sitio_id",           "toTable":"sitios",           "toColumn":"id",          "lineageTag":"r0003"},
+      {"name":"r04","fromTable":"tickets","fromColumn":"linea_negocio_id",   "toTable":"lineas_negocio",   "toColumn":"id",          "lineageTag":"r0004"},
+      {"name":"r05","fromTable":"tickets","fromColumn":"asunto_id",          "toTable":"asuntos",          "toColumn":"id",          "lineageTag":"r0005"},
+      {"name":"r06","fromTable":"tickets","fromColumn":"tipo_solicitud_id",  "toTable":"tipos_solicitud",  "toColumn":"id",          "lineageTag":"r0006"},
+      {"name":"r07","fromTable":"tickets","fromColumn":"usuario_id",         "toTable":"Solicitantes",     "toColumn":"id",          "lineageTag":"r0007"},
+      {"name":"r08","fromTable":"tickets","fromColumn":"admin_id",           "toTable":"Administradores",  "toColumn":"id",          "lineageTag":"r0008"},
+      {"name":"r09","fromTable":"tickets","fromColumn":"prioridad_id",       "toTable":"sla_configuracion","toColumn":"prioridad_id", "lineageTag":"r0009", "isActive": false},
+      {"name":"r10","fromTable":"asuntos","fromColumn":"tipo_asunto_id",     "toTable":"tipos_asunto",     "toColumn":"id",          "lineageTag":"r0010"},
+      {"name":"r11","fromTable":"sitios", "fromColumn":"region_id",          "toTable":"regiones",         "toColumn":"id",          "lineageTag":"r0011"}
+    ],
+
+    "annotations": [
+      {"name":"PBI_QueryOrder","value":"[\"tickets\",\"estados\",\"prioridades\",\"tipos_asunto\",\"tipos_solicitud\",\"regiones\",\"sitios\",\"lineas_negocio\",\"asuntos\",\"sla_configuracion\",\"Solicitantes\",\"Administradores\",\"v_tickets_pendientes\",\"v_sla_cumplimiento\",\"v_metricas_admin\",\"v_dash_creados_vs_cerrados\",\"v_dash_por_sitio\",\"v_dash_por_linea_negocio\",\"v_dash_por_tipo_asunto\",\"v_promedio_por_prioridad\",\"v_promedio_por_asunto\",\"_Medidas\"]"}
+    ]
+  }
+}

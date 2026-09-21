@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Sistema de Incidencia y Requerimiento — TABASCO OC</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* Marca derivada del logo TABASCO OC */
+    --brand-900:#0B1F4D;
+    --brand-800:#11307A;
+    --brand-700:#1B3FA0;
+    --brand-600:#2752C7;
+    --brand-100:#E6ECFB;
+    --brand-50:#F2F5FC;
+
+    --accent-600:#E8770B;
+    --accent-500:#F58A1F;
+    --accent-100:#FDEBD6;
+
+    --ink-900:#0E1726;
+    --ink-700:#2A3447;
+    --ink-500:#5C667A;
+    --ink-400:#8A93A6;
+    --ink-300:#B8BFCC;
+    --ink-200:#D7DBE3;
+    --ink-100:#ECEEF2;
+    --ink-50:#F5F6F9;
+    --ink-25:#FAFBFD;
+    --paper:#FFFFFF;
+
+    --ok-600:#117A48;
+    --ok-100:#DCF1E3;
+    --warn-600:#A56300;
+    --warn-100:#FCEFD0;
+    --crit-600:#B42318;
+    --crit-100:#FCE3E0;
+    --info-600:#1357B8;
+    --info-100:#DDE8FA;
+
+    --r-sm:6px;
+    --r-md:10px;
+    --r-lg:14px;
+    --r-pill:999px;
+
+    --shadow-xs: 0 1px 0 rgba(14,23,38,.04), 0 1px 2px rgba(14,23,38,.04);
+    --shadow-sm: 0 1px 2px rgba(14,23,38,.04), 0 2px 6px rgba(14,23,38,.06);
+    --shadow-md: 0 4px 12px rgba(14,23,38,.08), 0 1px 3px rgba(14,23,38,.06);
+
+    font-family: 'Manrope', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: var(--ink-900);
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; background:#E9ECF3; }
+  body{ min-height: 100vh; font-size: 14px; line-height: 1.4; -webkit-font-smoothing: antialiased; }
+
+  /* App frame ============================================================ */
+  .app{
+    display: grid;
+    grid-template-columns: 248px 1fr;
+    grid-template-rows: 64px 1fr;
+    min-height: 100vh;
+    background: var(--ink-25);
+  }
+
+  /* Top bar ============================================================== */
+  .topbar{
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 248px 1fr auto;
+    align-items: center;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink-100);
+    padding-right: 20px;
+    z-index: 5;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    padding: 0 18px;
+    height: 100%;
+    border-right: 1px solid var(--ink-100);
+  }
+  .brand-mark{
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--brand-800);
+    display:grid; place-items:center;
+    color:#fff; font-weight:800; letter-spacing:.5px; font-size:13px;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.08);
+    position:relative;
+  }
+  .brand-mark::after{
+    content:""; position:absolute; left:6px; right:6px; bottom:6px;
+    height:2px; background: var(--accent-500); border-radius:2px;
+  }
+  .brand-text{ display:flex; flex-direction:column; line-height:1.1; }
+  .brand-text b{ font-size:14px; letter-spacing:.04em; color:var(--brand-900); }
+  .brand-text span{ font-size:11px; color:var(--ink-500); letter-spacing:.06em; text-transform:uppercase; }
+
+  .topbar-mid{
+    display:flex; align-items:center; gap: 18px;
+    padding: 0 22px;
+  }
+  .crumbs{
+    display:flex; align-items:center; gap:8px;
+    font-size:12.5px; color:var(--ink-500);
+  }
+  .crumbs b{ color:var(--ink-900); font-weight:600; }
+  .crumbs .sep{ color:var(--ink-300); }
+
+  .topbar-title{
+    font-size: 16px; font-weight: 700; color: var(--ink-900);
+    letter-spacing:-.005em;
+  }
+  .topbar-title .muted{ color:var(--ink-400); font-weight:500; }
+
+  .topbar-right{
+    display:flex; align-items:center; gap: 10px;
+  }
+  .search{
+    display:flex; align-items:center; gap:8px;
+    background: var(--ink-50);
+    border:1px solid var(--ink-100);
+    border-radius: 8px;
+    padding: 8px 12px;
+    width: 320px;
+    color: var(--ink-500);
+    font-size: 13px;
+  }
+  .search kbd{
+    margin-left:auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-500);
+    background: var(--paper);
+    border:1px solid var(--ink-200);
+    border-radius: 4px;
+    padding: 1px 6px;
+  }
+  .icon-btn{
+    width:36px; height:36px; border-radius:8px;
+    border:1px solid var(--ink-100); background:var(--paper);
+    display:grid; place-items:center; color:var(--ink-700);
+    position:relative; cursor:pointer;
+  }
+  .icon-btn .dot{
+    position:absolute; top:7px; right:8px;
+    width:7px; height:7px; background:var(--accent-500); border-radius:50%;
+    box-shadow: 0 0 0 2px var(--paper);
+  }
+  .avatar{
+    display:flex; align-items:center; gap:10px;
+    padding: 4px 10px 4px 4px;
+    border:1px solid var(--ink-100); border-radius: 999px;
+    background: var(--paper);
+  }
+  .avatar .pic{
+    width:28px; height:28px; border-radius:50%;
+    background: linear-gradient(135deg,#1B3FA0,#2752C7); color:#fff;
+    font-size:11px; font-weight:700; display:grid; place-items:center;
+  }
+  .avatar .who{ line-height:1.1; }
+  .avatar .who b{ font-size:12.5px; }
+  .avatar .who span{ font-size:11px; color:var(--ink-500); }
+
+  /* Sidebar ============================================================== */
+  .sidebar{
+    background: var(--paper);
+    border-right: 1px solid var(--ink-100);
+    display:flex; flex-direction:column;
+    padding: 16px 12px;
+    gap: 18px;
+  }
+  .nav-group{ display:flex; flex-direction:column; gap:2px; }
+  .nav-group .label{
+    font-size:10.5px; font-weight:700; letter-spacing:.12em;
+    color: var(--ink-400); text-transform: uppercase;
+    padding: 4px 10px 6px;
+  }
+  .nav-item{
+    display:flex; align-items:center; gap:10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: var(--ink-700);
+    font-size: 13.5px; font-weight: 500;
+    cursor: pointer;
+    position: relative;
+  }
+  .nav-item .ico{ width:18px; height:18px; color:var(--ink-500); flex:none; }
+  .nav-item .count{
+    margin-left:auto; font-size:11px; font-weight:600;
+    color: var(--ink-500); background: var(--ink-50);
+    border: 1px solid var(--ink-100);
+    padding: 1px 7px; border-radius: 999px;
+  }
+  .nav-item:hover{ background: var(--ink-50); }
+  .nav-item.active{
+    background: var(--brand-800);
+    color:#fff;
+    box-shadow: 0 6px 16px -8px rgba(27,63,160,.65);
+  }
+  .nav-item.active .ico{ color:#fff; }
+  .nav-item.active .count{
+    color:#fff; background: rgba(255,255,255,.14); border-color: transparent;
+  }
+  .nav-item.active::after{
+    content:""; position:absolute; right:10px;
+    width:6px; height:6px; border-right:1.5px solid #fff; border-top:1.5px solid #fff;
+    transform: rotate(45deg);
+  }
+
+  .side-divider{ height:1px; background: var(--ink-100); margin: 2px 6px; }
+
+  .quota-card{
+    margin-top:auto;
+    background: linear-gradient(180deg, var(--brand-50), #fff);
+    border: 1px solid var(--ink-100);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 12px; color: var(--ink-700);
+  }
+  .quota-card b{ display:block; font-size:12.5px; color:var(--ink-900); }
+  .quota-bar{
+    height:6px; background: var(--ink-100); border-radius:3px; margin:8px 0;
+    overflow: hidden;
+  }
+  .quota-bar > i{ display:block; height:100%; width:62%; background: var(--brand-700); }
+
+  .user-card{
+    display:flex; align-items:center; gap:10px;
+    padding: 10px;
+    border:1px solid var(--ink-100);
+    border-radius: 10px;
+    background: var(--paper);
+  }
+  .user-card .pic{
+    width:34px; height:34px; border-radius:50%;
+    background: #11307A; color:#fff;
+    display:grid; place-items:center; font-size:12.5px; font-weight:700;
+    flex: none;
+  }
+  .user-card .who{ display:flex; flex-direction:column; line-height:1.15; min-width:0; }
+  .user-card .who b{ font-size:13px; }
+  .user-card .who span{ font-size:11.5px; color:var(--ink-500); }
+  .user-card .dots{ margin-left:auto; color: var(--ink-400); }
+
+  /* Main ================================================================= */
+  .main{
+    padding: 22px 28px 32px;
+    overflow: auto;
+  }
+
+  .page-head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    margin-bottom: 18px;
+  }
+  .page-title{
+    font-size: 22px; font-weight: 800; letter-spacing:-.01em; color: var(--ink-900);
+    margin: 0;
+  }
+  .page-sub{ font-size: 13px; color: var(--ink-500); margin-top: 4px; }
+  .page-actions{ display:flex; align-items:center; gap:8px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    height:36px; padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid var(--ink-200);
+    background: var(--paper);
+    color: var(--ink-900);
+    font-weight: 600; font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: var(--shadow-xs);
+  }
+  .btn.primary{
+    background: var(--accent-500);
+    border-color: transparent;
+    color:#fff;
+    box-shadow: 0 6px 14px -6px rgba(232,119,11,.7), inset 0 -1px 0 rgba(0,0,0,.08);
+  }
+  .btn.primary:hover{ background: var(--accent-600); }
+  .btn.ghost{ background: transparent; border-color: transparent; }
+
+  /* KPI tiles ============================================================ */
+  .kpis{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .kpi{
+    background: var(--paper);
+    border: 1px solid var(--ink-100);
+    border-radius: 14px;
+    padding: 16px 16px 14px;
+    box-shadow: var(--shadow-xs);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi .label{
+    display:flex; align-items:center; gap:8px;
+    color: var(--ink-500); font-size: 12px; font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .kpi .label .pip{
+    width:8px; height:8px; border-radius:50%;
+  }
+  .kpi.tot   .pip{ background: var(--brand-700); }
+  .kpi.open  .pip{ background: var(--info-600); }
+  .kpi.prog  .pip{ background: var(--warn-600); }
+  .kpi.crit  .pip{ background: var(--crit-600); }
+
+  .kpi .value{
+    font-size: 30px; font-weight: 800; letter-spacing: -.02em;
+    margin-top: 6px;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .delta{
+    margin-top: 8px; font-size: 11.5px; color: var(--ink-500);
+    display:flex; align-items:center; gap:6px;
+  }
+  .kpi .delta b{ color: var(--ok-600); font-weight: 700; }
+  .kpi .delta.down b{ color: var(--crit-600); }
+  .kpi .spark{
+    position:absolute; right: 14px; top: 14px;
+    width: 80px; height: 36px;
+    opacity:.9;
+  }
+
+  /* Filters bar ========================================================== */
+  .panel{
+    background: var(--paper);
+    border: 1px solid var(--ink-100);
+    border-radius: 14px;
+    box-shadow: var(--shadow-xs);
+    overflow: hidden;
+  }
+  .filters{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--ink-100);
+    align-items: center;
+  }
+  .chip-row{ display:flex; flex-wrap: wrap; gap: 8px; align-items:center; }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    height:30px; padding: 0 10px;
+    border-radius: var(--r-pill);
+    background: var(--ink-50);
+    border: 1px solid var(--ink-100);
+    font-size: 12.5px; color: var(--ink-700); font-weight: 500;
+  }
+  .chip .k{ color: var(--ink-500); font-weight: 500; }
+  .chip .v{ font-weight: 700; color: var(--ink-900); }
+  .chip .x{ color: var(--ink-400); cursor:pointer; }
+  .chip.add{ border-style: dashed; color: var(--ink-500); background: transparent; }
+
+  .toolbar-right{ display:flex; align-items:center; gap: 8px; }
+  .tabs{
+    display:flex; gap: 4px;
+    background: var(--ink-50);
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .tab{
+    height: 26px; padding: 0 10px; border-radius: 6px;
+    display:inline-flex; align-items:center; gap:6px;
+    font-size: 12px; font-weight: 600; color: var(--ink-500);
+    cursor:pointer;
+  }
+  .tab.on{ background: var(--paper); color: var(--ink-900); box-shadow: var(--shadow-xs); }
+  .tab .n{
+    font-size: 10.5px;
+    background: var(--ink-100); color: var(--ink-500);
+    padding: 0 6px; border-radius: 999px;
+  }
+  .tab.on .n{ background: var(--brand-100); color: var(--brand-800); }
+
+  /* Table ================================================================ */
+  .table-wrap{ }
+  table.tbl{
+    width:100%; border-collapse: collapse;
+    font-size: 13px;
+  }
+  .tbl thead th{
+    background: var(--ink-50);
+    border-bottom: 1px solid var(--ink-100);
+    color: var(--ink-500);
+    font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 700;
+    text-align: left;
+    padding: 11px 14px;
+    white-space: nowrap;
+  }
+  .tbl thead th:first-child{ padding-left: 18px; width: 36px; }
+  .tbl tbody td{
+    border-bottom: 1px solid var(--ink-100);
+    padding: 14px 14px;
+    color: var(--ink-900);
+    vertical-align: middle;
+  }
+  .tbl tbody td:first-child{ padding-left: 18px; }
+  .tbl tbody tr:hover{ background: var(--ink-25); }
+
+  .id-cell{ font-family:'JetBrains Mono', monospace; font-size: 12.5px; color: var(--ink-700); }
+
+  /* Status pills */
+  .pill{
+    display:inline-flex; align-items:center; gap: 6px;
+    padding: 3px 9px;
+    border-radius: var(--r-pill);
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: .02em;
+    border: 1px solid transparent;
+  }
+  .pill::before{
+    content:""; width:6px; height:6px; border-radius:50%;
+  }
+  .pill.open{   color: var(--info-600); background: var(--info-100); }
+  .pill.open::before{ background: var(--info-600); }
+  .pill.prog{   color: var(--warn-600); background: var(--warn-100); }
+  .pill.prog::before{ background: var(--warn-600); }
+  .pill.hold{   color: var(--ink-700); background: var(--ink-100); }
+  .pill.hold::before{ background: var(--ink-400); }
+  .pill.crit{   color: var(--crit-600); background: var(--crit-100); }
+  .pill.crit::before{ background: var(--crit-600); }
+  .pill.done{   color: var(--ok-600); background: var(--ok-100); }
+  .pill.done::before{ background: var(--ok-600); }
+
+  .req-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--ink-50);
+    border: 1px solid var(--ink-100);
+    font-size: 11.5px; font-weight: 600; color: var(--ink-700);
+  }
+  .req-pill.inc{ color: var(--crit-600); background: #FBEEEC; border-color: #F4D7D2; }
+  .req-pill.req{ color: var(--brand-800); background: var(--brand-50); border-color: var(--brand-100); }
+
+  .person{ display:flex; align-items:center; gap: 10px; }
+  .person .ap{
+    width: 26px; height: 26px; border-radius: 50%;
+    font-size: 10.5px; font-weight: 700; color: #fff;
+    display:grid; place-items:center;
+    background: var(--brand-700);
+    flex: none;
+  }
+  .person .ap.b{ background:#0A7C66; }
+  .person .ap.c{ background:#8A4DA8; }
+  .person .ap.d{ background:#B5651D; }
+  .person .ap.e{ background:#1B3FA0; }
+  .person .ap.f{ background:#2E7D32; }
+  .person .ap.g{ background:#A04A93; }
+  .person .ap.h{ background:#374151; }
+  .person .nm{ line-height: 1.15; }
+  .person .nm b{ font-size: 13px; font-weight: 600; color: var(--ink-900); }
+  .person .nm span{ font-size: 11.5px; color: var(--ink-500); display:block; }
+
+  .dates{ line-height:1.2; }
+  .dates b{ font-weight: 600; }
+  .dates span{ font-size: 11.5px; color: var(--ink-500); }
+  .dates .due{ font-size: 11px; color: var(--crit-600); font-weight:600; }
+  .dates .due.ok{ color: var(--ok-600); }
+
+  .sla{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11.5px; font-weight:600;
+  }
+  .sla .bar{
+    width:48px; height:6px; border-radius: 3px;
+    background: var(--ink-100); overflow:hidden;
+  }
+  .sla .bar > i{ display:block; height:100%; background: var(--ok-600); }
+  .sla.warn .bar > i{ background: var(--warn-600); }
+  .sla.crit .bar > i{ background: var(--crit-600); }
+
+  .checkbox{
+    width: 16px; height: 16px; border:1.5px solid var(--ink-300); border-radius: 4px;
+    display: inline-block; vertical-align: middle;
+  }
+  .checkbox.on{ background: var(--brand-700); border-color: var(--brand-700); position: relative; }
+  .checkbox.on::after{
+    content:""; position:absolute; left:4px; top:1px; width:5px; height:9px;
+    border-right:2px solid #fff; border-bottom:2px solid #fff; transform: rotate(45deg);
+  }
+
+  .row-actions{ display:flex; gap:4px; justify-content:flex-end; }
+  .row-actions .mini{
+    width: 26px; height: 26px; border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--ink-500);
+    display:grid; place-items:center;
+    cursor: pointer;
+  }
+  .row-actions .mini:hover{ background: var(--ink-50); border-color: var(--ink-100); color: var(--ink-900); }
+
+  /* Footer of table */
+  .tfoot{
+    display:flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px;
+    color: var(--ink-500); font-size: 12.5px;
+  }
+  .pager{ display:flex; align-items:center; gap: 4px; }
+  .pager .pg{
+    height: 28px; min-width: 28px; padding: 0 8px;
+    display:inline-grid; place-items:center;
+    font-size:12px; font-weight:600;
+    border-radius: 6px;
+    color: var(--ink-700);
+    border: 1px solid transparent;
+  }
+  .pager .pg:hover{ background: var(--ink-50); }
+  .pager .pg.on{ background: var(--brand-50); color: var(--brand-800); border-color: var(--brand-100); }
+  .pager .arr{ color: var(--ink-500); }
+
+  /* Aside layout under table */
+  .below{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-top: 22px;
+  }
+
+  .card{
+    background: var(--paper);
+    border: 1px solid var(--ink-100);
+    border-radius: 14px;
+    box-shadow: var(--shadow-xs);
+  }
+  .card-head{
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--ink-100);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .card-head h3{
+    margin:0; font-size: 14px; font-weight: 700; color: var(--ink-900);
+  }
+  .card-head .meta{ font-size: 11.5px; color: var(--ink-500); }
+  .card-body{ padding: 16px; }
+
+  /* Activity feed */
+  .feed{ display:flex; flex-direction:column; gap: 12px; }
+  .feed-item{
+    display: grid;
+    grid-template-columns: 26px 1fr auto;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .feed-item .ap{
+    width:26px; height:26px; border-radius:50%;
+    color:#fff; font-size: 10.5px; font-weight: 700;
+    display:grid; place-items:center; background: var(--brand-700);
+  }
+  .feed-item .ap.b{ background:#0A7C66; }
+  .feed-item .ap.c{ background:#8A4DA8; }
+  .feed-item .ap.d{ background:#B5651D; }
+  .feed-item .body{ font-size: 12.5px; color: var(--ink-700); line-height: 1.45; }
+  .feed-item .body b{ color: var(--ink-900); font-weight:700; }
+  .feed-item .body .tag{
+    display:inline-block; padding: 1px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    background: var(--ink-50); border:1px solid var(--ink-100); color: var(--ink-700);
+  }
+  .feed-item .when{ font-size: 11px; color: var(--ink-400); white-space: nowrap; }
+
+  /* Distribution */
+  .dist-row{
+    display: grid;
+    grid-template-columns: 110px 1fr 44px;
+    gap: 10px; align-items: center;
+    font-size: 12.5px;
+    padding: 6px 0;
+  }
+  .dist-row .nm{ color: var(--ink-700); font-weight: 600; }
+  .dist-row .bar{
+    height: 8px; border-radius: 4px;
+    background: var(--ink-100); overflow: hidden;
+  }
+  .dist-row .bar > i{
+    display:block; height:100%;
+    background: linear-gradient(90deg, var(--brand-700), var(--brand-600));
+  }
+  .dist-row .vl{ text-align:right; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink-900); }
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Top bar ============================================================ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">TO</div>
+      <div class="brand-text">
+        <b>TABASCO OC</b>
+        <span>Operations Center</span>
+      </div>
+    </div>
+
+    <div class="topbar-mid">
+      <nav class="crumbs">
+        <span>Operaciones</span>
+        <span class="sep">/</span>
+        <span>Service Desk</span>
+        <span class="sep">/</span>
+        <b>Tickets</b>
+      </nav>
+    </div>
+
+    <div class="topbar-right">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Buscar tickets, solicitantes, sitios…</span>
+        <kbd>⌘ K</kbd>
+      </div>
+      <button class="icon-btn" title="Notificaciones">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="icon-btn" title="Ayuda">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>
+      </button>
+      <div class="avatar">
+        <div class="pic">MR</div>
+        <div class="who"><b>M. Ramírez</b><span>Coordinador NOC</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar ============================================================ -->
+  <aside class="sidebar">
+    <div class="nav-group">
+      <div class="label">Mesa de servicio</div>
+      <div class="nav-item active">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg>
+        Total Tickets
+        <span class="count">128</span>
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        Asignados a mí
+        <span class="count">14</span>
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Estado
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        Tipo de solicitud
+      </div>
+      <a class="nav-item" href="Crear Ticket - Render Empresarial.html">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4v16h16v-7"/><path d="m14.5 4.5 5 5L12 17l-5 1 1-5z"/></svg>
+        Crear ticket
+      </a>
+    </div>
+
+    <div class="side-divider"></div>
+
+    <div class="nav-group">
+      <div class="label">Análisis</div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 6-6"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+        Reportes SLA
+        <span class="count">5</span>
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+        Sitios y catálogos
+      </div>
+    </div>
+
+    <div class="side-divider"></div>
+
+    <div class="nav-group">
+      <div class="label">Administración</div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><circle cx="17" cy="10" r="3"/><path d="M2 21a7 7 0 0 1 14 0M14 21a5 5 0 0 1 8 0"/></svg>
+        Usuarios y roles
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        Configuración
+      </div>
+    </div>
+
+    <div class="user-card">
+      <div class="pic">MR</div>
+      <div class="who">
+        <b>Mariana Ramírez</b>
+        <span>mariana.r@tabasco-oc.mx</span>
+      </div>
+      <span class="dots">⋯</span>
+    </div>
+  </aside>
+
+  <!-- Main ============================================================== -->
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Sistema de Incidencia y Requerimiento</h1>
+        <div class="page-sub">128 tickets activos · última sincronización hace 2 min · turno actual <b style="color:var(--ink-900)">Vespertino</b></div>
+      </div>
+      <div class="page-actions">
+        <button class="btn ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          Exportar
+        </button>
+        <button class="btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Vista semanal
+        </button>
+        <a class="btn primary" href="Crear Ticket - Render Empresarial.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          Crear nuevo ticket
+        </a>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <section class="kpis">
+      <div class="kpi tot">
+        <div class="label"><span class="pip"></span> Total tickets</div>
+        <div class="value">128</div>
+        <div class="delta"><b>▲ 8,4 %</b> vs. semana anterior</div>
+        <svg class="spark" viewBox="0 0 100 40" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#1B3FA0" stroke-width="2" points="0,28 12,24 24,26 36,18 48,22 60,14 72,18 84,10 100,12"/>
+        </svg>
+      </div>
+      <div class="kpi open">
+        <div class="label"><span class="pip"></span> Abiertos</div>
+        <div class="value">42</div>
+        <div class="delta"><b>▲ 3</b> nuevos hoy</div>
+        <svg class="spark" viewBox="0 0 100 40" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#1357B8" stroke-width="2" points="0,20 14,22 28,16 42,18 56,12 70,14 84,18 100,10"/>
+        </svg>
+      </div>
+      <div class="kpi prog">
+        <div class="label"><span class="pip"></span> En proceso</div>
+        <div class="value">63</div>
+        <div class="delta down"><b>▼ 2,1 %</b> tiempo medio resolución</div>
+        <svg class="spark" viewBox="0 0 100 40" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#A56300" stroke-width="2" points="0,16 14,22 28,18 42,24 56,18 70,22 84,20 100,24"/>
+        </svg>
+      </div>
+      <div class="kpi crit">
+        <div class="label"><span class="pip"></span> Críticos / SLA en riesgo</div>
+        <div class="value">7</div>
+        <div class="delta down"><b>▲ 2</b> requieren escalamiento</div>
+        <svg class="spark" viewBox="0 0 100 40" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#B42318" stroke-width="2" points="0,30 14,28 28,26 42,22 56,20 70,16 84,12 100,8"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Panel con filtros + tabla -->
+    <section class="panel">
+
+      <div class="filters">
+        <div class="chip-row">
+          <div class="chip"><span class="k">Sitio</span><span class="v">Todos</span><span class="x">×</span></div>
+          <div class="chip"><span class="k">Línea de negocio</span><span class="v">Operaciones, Infraestructura</span><span class="x">×</span></div>
+          <div class="chip"><span class="k">Prioridad</span><span class="v">Alta · Crítica</span><span class="x">×</span></div>
+          <div class="chip"><span class="k">Asignado a</span><span class="v">Cualquiera</span><span class="x">×</span></div>
+          <div class="chip"><span class="k">Periodo</span><span class="v">Últimos 30 días</span><span class="x">×</span></div>
+          <div class="chip add">+ Agregar filtro</div>
+        </div>
+        <div class="toolbar-right">
+          <div class="tabs">
+            <div class="tab on">Todos <span class="n">128</span></div>
+            <div class="tab">Abiertos <span class="n">42</span></div>
+            <div class="tab">En proceso <span class="n">63</span></div>
+            <div class="tab">Cerrados <span class="n">23</span></div>
+          </div>
+          <button class="btn" style="height:32px;padding:0 10px;font-size:12px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+            Ordenar
+          </button>
+          <button class="btn" style="height:32px;padding:0 10px;font-size:12px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Columnas
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th><span class="checkbox"></span></th>
+              <th>ID</th>
+              <th>Estado</th>
+              <th>Solicitante</th>
+              <th>Fecha crea. y resp.</th>
+              <th>Sitio</th>
+              <th>Línea de negocio</th>
+              <th>Asignado a</th>
+              <th>Tipo</th>
+              <th>SLA</th>
+              <th style="text-align:right;padding-right:18px;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td><span class="checkbox on"></span></td>
+              <td class="id-cell">#INC-2026-04812</td>
+              <td><span class="pill crit">Crítico</span></td>
+              <td>
+                <div class="person">
+                  <div class="ap b">JC</div>
+                  <div class="nm"><b>Jorge Cárdenas</b><span>Planta · Supervisor</span></div>
+                </div>
+              </td>
+              <td class="dates">
+                <b>28 may, 09:14</b>
+                <span class="due">vence en 02:11 h</span>
+              </td>
+              <td>Comalcalco — Estación 04</td>
+              <td>Infraestructura TI</td>
+              <td>
+                <div class="person">
+                  <div class="ap e">DR</div>
+                  <div class="nm"><b>Diana Reyes</b><span>NOC L2</span></div>
+                </div>
+              </td>
+              <td><span class="req-pill inc">● Incidencia</span></td>
+              <td><span class="sla crit"><span class="bar"><i style="width:88%"></i></span>88%</span></td>
+              <td>
+                <div class="row-actions">
+                  <a class="mini" title="Abrir" href="Detalle Ticket - Render Empresarial.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+                  <button class="mini" title="Más"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="checkbox"></span></td>
+              <td class="id-cell">#REQ-2026-04811</td>
+              <td><span class="pill prog">En proceso</span></td>
+              <td>
+                <div class="person">
+                  <div class="ap c">AL</div>
+                  <div class="nm"><b>Andrea López</b><span>Recursos Humanos</span></div>
+                </div>
+              </td>
+              <td class="dates">
+                <b>28 may, 08:42</b>
+                <span class="due ok">vence en 1 d 04 h</span>
+              </td>
+              <td>Villahermosa — Corporativo</td>
+              <td>Capital Humano</td>
+              <td>
+                <div class="person">
+                  <div class="ap d">RM</div>
+                  <div class="nm"><b>Raúl Mendoza</b><span>Soporte aplicaciones</span></div>
+                </div>
+              </td>
+              <td><span class="req-pill req">◐ Requerimiento</span></td>
+              <td><span class="sla warn"><span class="bar"><i style="width:62%"></i></span>62%</span></td>
+              <td>
+                <div class="row-actions">
+                  <a class="mini" title="Abrir" href="Detalle Ticket - Render Empresarial.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+                  <button class="mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="checkbox"></span></td>
+              <td class="id-cell">#INC-2026-04809</td>
+              <td><span class="pill open">Abierto</span></td>
+              <td>
+                <div class="person">
+                  <div class="ap f">SC</div>
+                  <div class="nm"><b>Sergio Cabrera</b><span>Comercial</span></div>
+                </div>
+              </td>
+              <td class="dates">
+                <b>28 may, 08:05</b>
+                <span class="due ok">vence en 06:48 h</span>
+              </td>
+              <td>Cárdenas — Sucursal Sur</td>
+              <td>Redes & Conectividad</td>
+              <td>
+                <div class="person">
+                  <div class="ap">PN</div>
+                  <div class="nm"><b>Pablo Núñez</b><span>NOC L1</span></div>
+                </div>
+              </td>
+              <td><span class="req-pill inc">● Incidencia</span></td>
+              <td><span class="sla"><span class="bar"><i style="width:32%"></i></span>32%</span></td>
+              <td>
+                <div class="row-actions">
+                  <a class="mini" title="Abrir" href="Detalle Ticket - Render Empresarial.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+                  <button class="mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="checkbox"></span></td>
+              <td class="id-cell">#REQ-2026-04807</td>
+              <td><span class="pill hold">En espera</span></td>
+              <td>
+                <div class="person">
+                  <div class="ap g">MV</div>
+                  <div class="nm"><b>Mónica Valdés</b><span>Finanzas</span></div>
+                </div>
+              </td>
+              <td class="dates">
+                <b>27 may, 18:22</b>
+                <span>respuesta proveedor</span>
+              </td>
+              <td>Villahermosa — Torre B</td>
+              <td>Aplicaciones ERP</td>
+              <td>
+                <div class="person">
+                  <div class="ap b">LH</div>
+                  <div class="nm"><b>Luis Herrera</b><span>Funcional SAP</span></div>
+                </div>
+              </td>
+              <td><span class="req-pill req">◐ Requerimiento</span></td>
+              <td><span class="sla"><span class="bar"><i style="width:45%"></i></span>45%</span></td>
+              <td>
+                <div class="row-actions">
+                  <a class="mini" title="Abrir" href="Detalle Ticket - Render Empresarial.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+                  <button class="mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="checkbox"></span></td>
+              <td class="id-cell">#INC-2026-04803</td>
+              <td><span class="pill prog">En proceso</span></td>
+              <td>
+                <div class="person">
+                  <div class="ap h">EP</div>
+                  <div class="nm"><b>Esteban Peña</b><span>Operación de campo</span></div>
+                </div>
+              </td>
+              <td class="dates">
+                <b>27 may, 14:09</b>
+                <span class="due ok">vence en 19:22 h</span>
+              </td>
+              <td>Paraíso — Plataforma 2</td>
+              <td>Operaciones</td>
+              <td>
+                <div class="person">
+                  <div class="ap d">RM</div>
+                  <div class="nm"><b>Raúl Mendoza</b><span>Soporte campo</span></div>
+                </div>
+              </td>
+              <td><span class="req-pill inc">● Incidencia</span></td>
+              <td><span class="sla warn"><span class="bar"><i style="width:71%"></i></span>71%</span></td>
+              <td>
+                <div class="row-actions">
+                  <a class="mini" title="Abrir" href="Detalle Ticket - Render Empresarial.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+                  <button class="mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="checkbox"></span></td>
+              <td class="id-cell">#REQ-2026-04798</td>
+              <td><span class="pill done">Resuelto</span></td>
+              <td>
+                <div class="person">
+                  <div class="ap c">CR</div>
+                  <div class="nm"><b>Camila Ruiz</b><span>Compras</span></div>
+                </div>
+              </td>
+              <td class="dates">
+                <b>27 may, 10:47</b>
+                <span>resuelto en 03:18 h</span>
+              </td>
+              <td>Villahermosa — CEDIS</td>
+              <td>Aplicaciones</td>
+              <td>
+                <div class="person">
+                  <div class="ap e">DR</div>
+                  <div class="nm"><b>Diana Reyes</b><span>NOC L2</span></div>
+                </div>
+              </td>
+              <td><span class="req-pill req">◐ Requerimiento</span></td>
+              <td><span class="sla"><span class="bar"><i style="width:18%"></i></span>OK</span></td>
+              <td>
+                <div class="row-actions">
+                  <a class="mini" title="Abrir" href="Detalle Ticket - Render Empresarial.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+                  <button class="mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="checkbox"></span></td>
+              <td class="id-cell">#INC-2026-04795</td>
+              <td><span class="pill open">Abierto</span></td>
+              <td>
+                <div class="person">
+                  <div class="ap">IT</div>
+                  <div class="nm"><b>Iván Torres</b><span>Logística</span></div>
+                </div>
+              </td>
+              <td class="dates">
+                <b>27 may, 07:51</b>
+                <span class="due ok">vence en 11:30 h</span>
+              </td>
+              <td>Macuspana — Almacén 3</td>
+              <td>Infraestructura TI</td>
+              <td>
+                <div class="person">
+                  <div class="ap f">NS</div>
+                  <div class="nm"><b>Natalia Solís</b><span>NOC L1</span></div>
+                </div>
+              </td>
+              <td><span class="req-pill inc">● Incidencia</span></td>
+              <td><span class="sla"><span class="bar"><i style="width:40%"></i></span>40%</span></td>
+              <td>
+                <div class="row-actions">
+                  <a class="mini" title="Abrir" href="Detalle Ticket - Render Empresarial.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+                  <button class="mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <div class="tfoot">
+          <div>Mostrando <b style="color:var(--ink-900);">1–7</b> de <b style="color:var(--ink-900);">128</b> tickets · 1 seleccionado</div>
+          <div class="pager">
+            <span class="pg arr">‹</span>
+            <span class="pg on">1</span>
+            <span class="pg">2</span>
+            <span class="pg">3</span>
+            <span class="pg">…</span>
+            <span class="pg">19</span>
+            <span class="pg arr">›</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Below: activity + distribution -->
+    <section class="below">
+      <div class="card">
+        <div class="card-head">
+          <h3>Actividad reciente</h3>
+          <span class="meta">Últimas 24 horas · 18 eventos</span>
+        </div>
+        <div class="card-body">
+          <div class="feed">
+            <div class="feed-item">
+              <div class="ap b">DR</div>
+              <div class="body"><b>Diana Reyes</b> escaló <span class="tag">#INC-2026-04812</span> a nivel L3 por proximidad de SLA.</div>
+              <div class="when">hace 12 min</div>
+            </div>
+            <div class="feed-item">
+              <div class="ap c">AL</div>
+              <div class="body"><b>Andrea López</b> creó el requerimiento <span class="tag">#REQ-2026-04811</span> — Alta de usuario SAP.</div>
+              <div class="when">hace 38 min</div>
+            </div>
+            <div class="feed-item">
+              <div class="ap d">RM</div>
+              <div class="body"><b>Raúl Mendoza</b> resolvió <span class="tag">#REQ-2026-04798</span> con la nota “VPN reaprovisionada”.</div>
+              <div class="when">hace 1 h</div>
+            </div>
+            <div class="feed-item">
+              <div class="ap">PN</div>
+              <div class="body"><b>Pablo Núñez</b> tomó el ticket <span class="tag">#INC-2026-04809</span> — pérdida de enlace MPLS Cárdenas.</div>
+              <div class="when">hace 2 h</div>
+            </div>
+            <div class="feed-item">
+              <div class="ap b">LH</div>
+              <div class="body"><b>Luis Herrera</b> dejó en espera <span class="tag">#REQ-2026-04807</span> — pendiente respuesta del proveedor.</div>
+              <div class="when">hace 4 h</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Distribución por línea de negocio</h3>
+          <span class="meta">128 tickets</span>
+        </div>
+        <div class="card-body">
+          <div class="dist-row">
+            <div class="nm">Infraestructura TI</div>
+            <div class="bar"><i style="width:78%"></i></div>
+            <div class="vl">42</div>
+          </div>
+          <div class="dist-row">
+            <div class="nm">Operaciones</div>
+            <div class="bar"><i style="width:60%"></i></div>
+            <div class="vl">31</div>
+          </div>
+          <div class="dist-row">
+            <div class="nm">Aplicaciones ERP</div>
+            <div class="bar"><i style="width:42%"></i></div>
+            <div class="vl">22</div>
+          </div>
+          <div class="dist-row">
+            <div class="nm">Redes</div>
+            <div class="bar"><i style="width:30%"></i></div>
+            <div class="vl">17</div>
+          </div>
+          <div class="dist-row">
+            <div class="nm">Capital Humano</div>
+            <div class="bar"><i style="width:18%"></i></div>
+            <div class="vl">10</div>
+          </div>
+          <div class="dist-row">
+            <div class="nm">Otros</div>
+            <div class="bar"><i style="width:10%"></i></div>
+            <div class="vl">6</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

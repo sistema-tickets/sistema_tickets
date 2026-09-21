@@ -20,6 +20,8 @@ sistema_tickets/
 │   │   └── database.php        ← Conexión PDO a MySQL
 │   ├── controllers/
 │   │   ├── AuthController.php
+│   │   ├── CatalogoController.php
+│   │   ├── DashboardController.php
 │   │   ├── TicketController.php
 │   │   └── UsuarioController.php
 │   ├── helpers/
@@ -29,45 +31,66 @@ sistema_tickets/
 │   │   ├── Auth.php            ← Verificación de sesión / roles
 │   │   └── Cors.php            ← Cabeceras CORS
 │   └── models/
+│       ├── DashboardModel.php
 │       ├── TicketModel.php
 │       └── UsuarioModel.php
 │
 ├── public/                     ← Raíz web (Apache/XAMPP apunta aquí)
 │   ├── .htaccess
-│   ├── index.php               ← Redirige a pages/login.html
+│   ├── index.php               ← Entry point principal (lista de tickets)
+│   ├── informes.php            ← Vista de informes (admin)
+│   ├── download.php            ← Descarga de adjuntos
+│   ├── login.html              ← Página de login (acceso directo)
+│   ├── logout.php              ← Cierre de sesión
+│   ├── dashboard.html          ← Dashboard legacy (Vue 3)
 │   │
 │   ├── api/                    ← Endpoints REST (PHP, accesibles vía HTTP)
 │   │   ├── auth.php            ← POST login/logout, GET me
+│   │   ├── catalogos.php       ← Lectura de catálogos (estados, prioridades, etc.)
+│   │   ├── dashboard.php       ← Estadísticas para el dashboard
 │   │   ├── tickets.php         ← CRUD tickets
+│   │   ├── upload.php          ← Subida de archivos adjuntos
 │   │   └── usuarios.php        ← CRUD usuarios
 │   │
-│   ├── pages/                  ← Páginas HTML del frontend
+│   ├── pages/                  ← Páginas del frontend (PHP + HTML)
 │   │   ├── login.html
+│   │   ├── register.html
+│   │   ├── register.php
+│   │   ├── password-reset.html
 │   │   ├── dashboard.html
 │   │   ├── admin/
-│   │   │   └── usuarios.html
+│   │   │   ├── informes.php    ← Informes y métricas (admin + superadmin)
+│   │   │   ├── usuarios.html
+│   │   │   ├── usuarios.php
+│   │   │   ├── catalogos.html
+│   │   │   └── catalogos.php
 │   │   └── tickets/
 │   │       ├── lista.html
 │   │       ├── crear.html
 │   │       └── detalle.html
 │   │
+│   ├── admin/
+│   │   └── usuarios.html
+│   │
 │   └── assets/                 ← Archivos estáticos del frontend
 │       ├── css/
 │       │   └── main.css
 │       ├── img/
+│       │   └── logo.jpg
+│       ├── inc/                ← Includes PHP reutilizables (sidebar, header)
+│       │   ├── header.php
+│       │   └── sidebar.php
 │       └── js/
 │           ├── api.js          ← Cliente HTTP para la API REST
 │           ├── auth.js         ← Manejo de sesión en el navegador
-│           └── components/
+│           └── header.js
 │
 ├── database/                   ← Scripts SQL (uno por tabla)
 │   ├── bd_tickets_tickets.sql
 │   ├── bd_tickets_usuarios.sql
 │   └── ... (un archivo por tabla)
 │
-├── docs/                       ← Documentación y diseño
-│   ├── mockups/                ← Mockups de la interfaz (PNG)
-│   └── referencias/            ← Capturas de referencia (Power Apps, etc.)
+├── docs/                       ← Documentación del proyecto
 │
 └── uploads/                    ← Archivos subidos por usuarios (no versionados)
     └── tickets/
@@ -81,11 +104,21 @@ sistema_tickets/
 |---|---|
 | Lógica PHP (modelos, controllers, helpers) | `backend/` |
 | Endpoints REST accesibles por HTTP | `public/api/` |
-| Páginas HTML | `public/pages/` |
+| Includes PHP reutilizables (sidebar, header) | `public/assets/inc/` |
+| Páginas principales con lógica PHP | `public/pages/` |
 | CSS, JS de frontend, imágenes de la UI | `public/assets/` |
 | Scripts SQL de base de datos | `database/` |
-| Mockups y docs de diseño | `docs/` |
 | Archivos subidos por usuarios | `uploads/` |
+
+---
+
+## Roles
+
+| Constante | ID | Acceso |
+|---|---|---|
+| `ROL_USUARIO` | 1 | Solo sus propios tickets |
+| `ROL_ADMIN` | 2 | Todos los tickets + Informes |
+| `ROL_SUPERADMIN` | 3 | Todo lo anterior + Usuarios y Configuración |
 
 ---
 
@@ -100,7 +133,7 @@ sistema_tickets/
 
 ## Arquitectura
 
-- **Frontend**: HTML estático + Vue 3 (CDN) + CSS propio. Sin bundler ni dependencias npm.
+- **Frontend**: HTML + PHP + Vue 3 (CDN) + CSS propio. Sin bundler ni dependencias npm.
 - **Backend**: PHP 8.1+, arquitectura MVC manual. Sin framework.
 - **API**: REST JSON. Los endpoints en `public/api/` reciben `$_GET['action']` o `$_GET['id']` para el routing.
 - **Autenticación**: Sesiones PHP (`session_start`). El middleware `Auth.php` protege cada endpoint.

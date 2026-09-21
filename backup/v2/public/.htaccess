@@ -1,0 +1,25 @@
+Options -Indexes
+Options -MultiViews
+
+# Fuerza HTTPS en producción (descomenta en producción)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteEngine On
+
+# Bloquea acceso a archivos sensibles
+<FilesMatch "\.(env|log|sql|md|gitignore)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Sirve archivos y directorios existentes directamente
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Redirige raíz al login
+RewriteRule ^$ login.html [L]
+
+# Rutas de API → index.php de api/
+RewriteRule ^api/(.*)$ api/$1 [L]

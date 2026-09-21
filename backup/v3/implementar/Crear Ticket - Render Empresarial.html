@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Crear ticket — TABASCO OC</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/app.css" />
+<style>
+  .main{ padding-bottom:96px; }
+  .create-grid{
+    display:grid;
+    grid-template-columns: minmax(0,1fr) 332px;
+    gap:22px;
+    align-items:start;
+  }
+  .form-stack{ display:flex; flex-direction:column; gap:18px; }
+
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+  .card-body.tight{ padding:18px; display:flex; flex-direction:column; gap:16px; }
+
+  /* right rail */
+  .rail{ position:sticky; top:22px; display:flex; flex-direction:column; gap:16px; }
+  .summary-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 0; border-bottom:1px dashed var(--ink-100); font-size:12.5px;
+  }
+  .summary-row:last-child{ border-bottom:none; }
+  .summary-row .k{ color:var(--ink-500); }
+  .summary-row .v{ color:var(--ink-900); font-weight:600; }
+  .summary-row .v.muted{ color:var(--ink-300); font-weight:500; }
+
+  .tip{
+    display:flex; gap:10px; font-size:12px; color:var(--ink-600); line-height:1.5;
+    padding:10px 0; border-bottom:1px solid var(--ink-100);
+  }
+  .tip:last-child{ border-bottom:none; }
+  .tip .ic{ color:var(--brand-600); flex:none; margin-top:1px; }
+
+  /* sticky footer */
+  .form-footer{
+    position:fixed; left:248px; right:0; bottom:0;
+    background:var(--paper); border-top:1px solid var(--ink-100);
+    box-shadow:0 -8px 24px -16px rgba(14,23,38,.2);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px; z-index:6;
+  }
+  .form-footer .left{ font-size:12.5px; color:var(--ink-500); display:flex; align-items:center; gap:10px; }
+  .form-footer .left .ok{ color:var(--ok-600); font-weight:700; }
+  .form-footer .right{ display:flex; align-items:center; gap:10px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <a class="brand" href="Sistema Incidencias - Render Empresarial.html">
+      <div class="brand-mark">TO</div>
+      <div class="brand-text"><b>TABASCO OC</b><span>Operations Center</span></div>
+    </a>
+    <div class="topbar-mid">
+      <nav class="crumbs">
+        <a href="Sistema Incidencias - Render Empresarial.html">Service Desk</a>
+        <span class="sep">/</span>
+        <a href="Sistema Incidencias - Render Empresarial.html">Tickets</a>
+        <span class="sep">/</span>
+        <b>Crear ticket</b>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Buscar tickets, solicitantes, sitios…</span>
+        <kbd>⌘ K</kbd>
+      </div>
+      <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="dot"></span></button>
+      <div class="avatar"><div class="pic">SA</div><div class="who"><b>Super Admin</b><span>Administrador</span></div></div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="nav-group">
+      <div class="label">Mesa de servicio</div>
+      <a class="nav-item" href="Sistema Incidencias - Render Empresarial.html">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg>
+        Total Tickets <span class="count">128</span>
+      </a>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        Asignados a mí <span class="count">14</span>
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Estado
+      </div>
+      <div class="nav-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        Tipo de solicitud
+      </div>
+      <a class="nav-item active" href="Crear Ticket - Render Empresarial.html">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4v16h16v-7"/><path d="m14.5 4.5 5 5L12 17l-5 1 1-5z"/></svg>
+        Crear ticket
+      </a>
+    </div>
+    <div class="side-divider"></div>
+    <div class="nav-group">
+      <div class="label">Análisis</div>
+      <div class="nav-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 6-6"/></svg> Dashboard</div>
+      <div class="nav-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg> Reportes SLA <span class="count">5</span></div>
+      <div class="nav-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg> Sitios y catálogos</div>
+    </div>
+    <div class="side-divider"></div>
+    <div class="nav-group">
+      <div class="label">Administración</div>
+      <div class="nav-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><circle cx="17" cy="10" r="3"/><path d="M2 21a7 7 0 0 1 14 0M14 21a5 5 0 0 1 8 0"/></svg> Usuarios y roles</div>
+      <div class="nav-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8M4.6 9a1.7 1.7 0 0 0-.3-1.8"/><circle cx="12" cy="12" r="9"/></svg> Configuración</div>
+    </div>
+    <div class="user-card" style="margin-top:auto;">
+      <div class="pic">SA</div>
+      <div class="who"><b>Super Admin</b><span>admin@tabasco-oc.mx</span></div>
+      <span class="dots">⋯</span>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Crear un ticket</h1>
+        <div class="page-sub">Introduce los datos de la solicitud para enviarla a soporte. Los campos con <span style="color:var(--crit-600);font-weight:700;">*</span> son obligatorios.</div>
+      </div>
+      <div class="page-actions">
+        <a class="btn ghost" href="Sistema Incidencias - Render Empresarial.html">Cancelar</a>
+        <button class="btn">Guardar borrador</button>
+      </div>
+    </div>
+
+    <div class="create-grid">
+
+      <!-- LEFT: form -->
+      <div class="form-stack">
+
+        <!-- Datos de la solicitud -->
+        <div class="card">
+          <div class="card-head">
+            <h3>Datos de la solicitud</h3>
+            <span class="meta">Paso 1 de 2</span>
+          </div>
+          <div class="card-body tight">
+            <div class="grid-2">
+              <div class="field">
+                <label>Nombre del solicitante <span class="req">*</span></label>
+                <div class="control select"><span>Aristeidy Ahumada Cabargas</span><span class="chev">▾</span></div>
+              </div>
+              <div class="field">
+                <label>Correo electrónico</label>
+                <div class="control"><span>aristeidy.ahumada@tabasco-oc.mx</span></div>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Celular</label>
+                <div class="control placeholder"><span>+52 — Opcional</span></div>
+              </div>
+              <div class="field">
+                <label>Línea de negocio <span class="req">*</span></label>
+                <div class="control select"><span>Control de Materiales</span><span class="chev">▾</span></div>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Sitio <span class="req">*</span></label>
+                <div class="control select"><span>CALI — Sede Sur</span><span class="chev">▾</span></div>
+              </div>
+              <div class="field">
+                <label>Canal de origen</label>
+                <div class="control select"><span>Call</span><span class="chev">▾</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Descripción de solicitud -->
+        <div class="card">
+          <div class="card-head">
+            <h3>Descripción de la solicitud</h3>
+            <span class="meta">Paso 2 de 2</span>
+          </div>
+          <div class="card-body tight">
+            <div class="grid-2">
+              <div class="field">
+                <label>Asignado a</label>
+                <div class="control select placeholder"><span>— Sin asignar —</span><span class="chev">▾</span></div>
+                <span class="hint">Si se deja sin asignar, entra a la cola del equipo del sitio.</span>
+              </div>
+              <div class="field">
+                <label>Asunto <span class="req">*</span></label>
+                <div class="control select"><span>Falla de impresora — Almacén RC</span><span class="chev">▾</span></div>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Tipo de asunto <span class="req">*</span></label>
+                <div class="control select"><span>Hardware / Periféricos</span><span class="chev">▾</span></div>
+              </div>
+              <div class="field">
+                <label>Prioridad <span class="req">*</span></label>
+                <div class="seg">
+                  <span class="opt low"><span class="pip"></span>Baja</span>
+                  <span class="opt mid on"><span class="pip"></span>Media</span>
+                  <span class="opt high"><span class="pip"></span>Alta</span>
+                </div>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Tipo de solicitud <span class="req">*</span></label>
+                <div class="control select"><span>Incidencia</span><span class="chev">▾</span></div>
+              </div>
+              <div class="field">
+                <label>Estado inicial <span class="req">*</span></label>
+                <div class="control select"><span>En espera</span><span class="chev">▾</span></div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Descripción <span class="req">*</span></label>
+              <div class="editor">
+                <div class="bar">
+                  <span class="tb" style="font-weight:800;">B</span>
+                  <span class="tb" style="font-style:italic;">I</span>
+                  <span class="tb" style="text-decoration:underline;">U</span>
+                  <span class="tb" style="text-decoration:line-through;">S</span>
+                  <span class="vr"></span>
+                  <span class="tb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
+                  <span class="tb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4l2-2.5V14"/></svg></span>
+                  <span class="vr"></span>
+                  <span class="tb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h12M3 18h18"/></svg></span>
+                  <span class="tb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></span>
+                </div>
+                <div class="area">Describe el problema con detalle: equipo afectado, mensaje de error, pasos para reproducir e impacto en la operación…</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Archivos adjuntos</label>
+              <div class="dropzone">
+                <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5-5 5 5"/><path d="M12 5v12"/></svg></div>
+                <div class="txt">
+                  <b>Arrastra archivos o selecciónalos</b>
+                  Puedes adjuntar varios archivos · PNG, JPG, PDF, LOG · hasta 25 MB c/u
+                </div>
+                <button class="btn" style="margin-left:auto;">Seleccionar archivos</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: rail -->
+      <div class="rail">
+        <div class="card">
+          <div class="card-head"><h3>Resumen</h3></div>
+          <div class="card-body" style="padding:8px 18px;">
+            <div class="summary-row"><span class="k">Tipo</span><span class="v"><span class="req-pill inc" style="padding:2px 8px;">● Incidencia</span></span></div>
+            <div class="summary-row"><span class="k">Prioridad</span><span class="v">Media</span></div>
+            <div class="summary-row"><span class="k">Estado inicial</span><span class="v"><span class="pill hold" style="padding:2px 8px;">En espera</span></span></div>
+            <div class="summary-row"><span class="k">Línea de negocio</span><span class="v">Control de Materiales</span></div>
+            <div class="summary-row"><span class="k">Sitio</span><span class="v">CALI — Sede Sur</span></div>
+            <div class="summary-row"><span class="k">Asignado a</span><span class="v muted">Sin asignar</span></div>
+            <div class="summary-row"><span class="k">SLA estimado</span><span class="v">24 h hábiles</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Recomendaciones</h3></div>
+          <div class="card-body" style="padding:6px 18px 14px;">
+            <div class="tip">
+              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Un asunto claro y específico acelera la clasificación y el enrutamiento al equipo correcto.
+            </div>
+            <div class="tip">
+              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+              Adjunta capturas o el log del error: reduce los reabiertos por falta de información.
+            </div>
+            <div class="tip">
+              <svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+              Usa <b style="color:var(--ink-900)">Prioridad Alta</b> solo cuando la operación esté detenida.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Sticky footer -->
+<div class="form-footer">
+  <div class="left">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ok-600)" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+    <span><span class="ok">6 de 8</span> campos obligatorios completos · borrador guardado hace 1 min</span>
+  </div>
+  <div class="right">
+    <a class="btn ghost" href="Sistema Incidencias - Render Empresarial.html">Cancelar</a>
+    <button class="btn">Guardar borrador</button>
+    <button class="btn primary lg">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
+      Guardar y publicar
+    </button>
+  </div>
+</div>
+</body>
+</html>

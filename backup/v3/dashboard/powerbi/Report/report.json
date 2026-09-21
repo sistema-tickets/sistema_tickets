@@ -1,0 +1,204 @@
+{
+  "id": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+  "resourcePackages": [],
+  "config": "{\"version\":\"5.53\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU02\",\"version\":\"5.53\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"filterConfig\":{\"type\":1},\"isThinReport\":true}",
+  "filters": "[]",
+  "sections": [
+
+    {
+      "id": "s01",
+      "name": "ReportSection1",
+      "displayName": "Resumen Ejecutivo",
+      "ordinal": 0,
+      "filters": "[]",
+      "config": "{\"visibility\":0,\"displayOption\":1}",
+      "visualContainers": [
+
+        {
+          "x": 16, "y": 16, "z": 1000, "width": 192, "height": 96,
+          "config": "{\"name\":\"vc-kpi-total\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":16,\"z\":1000,\"width\":192,\"height\":96,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Medidas.Total Tickets\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Total Tickets\"},\"Name\":\"_Medidas.Total Tickets\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Total Tickets'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":\"#6b7a95\"}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}}}}],\"background\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#ffffff\"}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#dde3ef\"}}}}]},\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":\"#1a3a6b\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Total Tickets\"},\"Name\":\"_Medidas.Total Tickets\"}]}"
+        },
+
+        {
+          "x": 224, "y": 16, "z": 1001, "width": 192, "height": 96,
+          "config": "{\"name\":\"vc-kpi-activos\",\"layouts\":[{\"id\":0,\"position\":{\"x\":224,\"y\":16,\"z\":1001,\"width\":192,\"height\":96,\"tabOrder\":1001}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Medidas.Tickets Activos\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Tickets Activos\"},\"Name\":\"_Medidas.Tickets Activos\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Activos'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":\"#6b7a95\"}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}}}}],\"background\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#ffffff\"}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#dde3ef\"}}}}]},\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":\"#1a3a6b\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Tickets Activos\"},\"Name\":\"_Medidas.Tickets Activos\"}]}"
+        },
+
+        {
+          "x": 432, "y": 16, "z": 1002, "width": 192, "height": 96,
+          "config": "{\"name\":\"vc-kpi-cerrados\",\"layouts\":[{\"id\":0,\"position\":{\"x\":432,\"y\":16,\"z\":1002,\"width\":192,\"height\":96,\"tabOrder\":1002}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Medidas.Tickets Cerrados\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Tickets Cerrados\"},\"Name\":\"_Medidas.Tickets Cerrados\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Cerrados'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":\"#6b7a95\"}}}}],\"background\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#ffffff\"}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#dde3ef\"}}}}]},\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":\"#16a34a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Tickets Cerrados\"},\"Name\":\"_Medidas.Tickets Cerrados\"}]}"
+        },
+
+        {
+          "x": 640, "y": 16, "z": 1003, "width": 192, "height": 96,
+          "config": "{\"name\":\"vc-kpi-vencidos\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":16,\"z\":1003,\"width\":192,\"height\":96,\"tabOrder\":1003}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Medidas.Vencidos SLA\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Vencidos SLA\"},\"Name\":\"_Medidas.Vencidos SLA\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Vencidos SLA'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":\"#6b7a95\"}}}}],\"background\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#ffffff\"}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#dde3ef\"}}}}]},\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":\"#dc2626\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Vencidos SLA\"},\"Name\":\"_Medidas.Vencidos SLA\"}]}"
+        },
+
+        {
+          "x": 848, "y": 16, "z": 1004, "width": 192, "height": 96,
+          "config": "{\"name\":\"vc-kpi-sinasignar\",\"layouts\":[{\"id\":0,\"position\":{\"x\":848,\"y\":16,\"z\":1004,\"width\":192,\"height\":96,\"tabOrder\":1004}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Medidas.Sin Asignar\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Sin Asignar\"},\"Name\":\"_Medidas.Sin Asignar\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Sin Asignar'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":\"#6b7a95\"}}}}],\"background\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#ffffff\"}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#dde3ef\"}}}}]},\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":\"#d97706\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Sin Asignar\"},\"Name\":\"_Medidas.Sin Asignar\"}]}"
+        },
+
+        {
+          "x": 1056, "y": 16, "z": 1005, "width": 192, "height": 96,
+          "config": "{\"name\":\"vc-kpi-criticos\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1056,\"y\":16,\"z\":1005,\"width\":192,\"height\":96,\"tabOrder\":1005}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Medidas.Criticos Activos\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Criticos Activos\"},\"Name\":\"_Medidas.Criticos Activos\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Criticos'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":\"#6b7a95\"}}}}],\"background\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#ffffff\"}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"color\":{\"solid\":{\"color\":\"#dde3ef\"}}}}]},\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":\"#7b0000\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Criticos Activos\"},\"Name\":\"_Medidas.Criticos Activos\"}]}"
+        },
+
+        {
+          "x": 16, "y": 128, "z": 2000, "width": 380, "height": 280,
+          "config": "{\"name\":\"vc-dona-estados\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":128,\"z\":2000,\"width\":380,\"height\":280,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"donutChart\",\"projections\":{\"Category\":[{\"queryRef\":\"e.nombre\"}],\"Y\":[{\"queryRef\":\"e.total\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"e\",\"Entity\":\"estados\",\"Type\":0},{\"Name\":\"v\",\"Entity\":\"v_dash_por_estado\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"estado\"},\"Name\":\"e.nombre\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total\"},\"Name\":\"e.total\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Tickets por Estado'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_estado\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"estado\"},\"Name\":\"estado\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total\"},\"Name\":\"total\"}]}"
+        },
+
+        {
+          "x": 412, "y": 128, "z": 2001, "width": 448, "height": 280,
+          "config": "{\"name\":\"vc-linea-tendencia\",\"layouts\":[{\"id\":0,\"position\":{\"x\":412,\"y\":128,\"z\":2001,\"width\":448,\"height\":280,\"tabOrder\":2001}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"v.fecha\"}],\"Y\":[{\"queryRef\":\"v.tickets_creados\"},{\"queryRef\":\"v.tickets_cerrados\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_creados_vs_cerrados\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"fecha\"},\"Name\":\"v.fecha\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"tickets_creados\"},\"Name\":\"v.tickets_creados\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"tickets_cerrados\"},\"Name\":\"v.tickets_cerrados\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Tendencia: Creados vs Cerrados'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_creados_vs_cerrados\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"fecha\"},\"Name\":\"fecha\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"tickets_creados\"},\"Name\":\"creados\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"tickets_cerrados\"},\"Name\":\"cerrados\"}]}"
+        },
+
+        {
+          "x": 876, "y": 128, "z": 2002, "width": 372, "height": 280,
+          "config": "{\"name\":\"vc-gauge-sla\",\"layouts\":[{\"id\":0,\"position\":{\"x\":876,\"y\":128,\"z\":2002,\"width\":372,\"height\":280,\"tabOrder\":2002}}],\"singleVisual\":{\"visualType\":\"gauge\",\"projections\":{\"Y\":[{\"queryRef\":\"_Medidas.% Cumplimiento SLA\"}],\"MinValue\":[],\"MaxValue\":[],\"TargetValue\":[]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"% Cumplimiento SLA\"},\"Name\":\"_Medidas.% Cumplimiento SLA\"}]},\"objects\":{\"gauge\":[{\"properties\":{\"minValue\":{\"expr\":{\"Literal\":{\"Value\":\"0\"}}}},{\"properties\":{\"maxValue\":{\"expr\":{\"Literal\":{\"Value\":\"1\"}}}},{\"properties\":{\"targetValue\":{\"expr\":{\"Literal\":{\"Value\":\"0.9\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'% Cumplimiento SLA'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"% Cumplimiento SLA\"},\"Name\":\"pct_sla\"}]}"
+        },
+
+        {
+          "x": 16, "y": 424, "z": 3000, "width": 620, "height": 240,
+          "config": "{\"name\":\"vc-barras-prioridad\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":424,\"z\":3000,\"width\":620,\"height\":240,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"v.prioridad\"}],\"Y\":[{\"queryRef\":\"v.activos\"},{\"queryRef\":\"v.cerrados\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_tipo_asunto\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"prioridad\"},\"Name\":\"v.prioridad\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"activos\"},\"Name\":\"v.activos\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"cerrados\"},\"Name\":\"v.cerrados\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Activos vs Cerrados por Prioridad'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"v_promedio_por_prioridad\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"prioridad\"},\"Name\":\"prioridad\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"dentro_sla\"},\"Name\":\"activos\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"fuera_sla\"},\"Name\":\"cerrados\"}]}"
+        },
+
+        {
+          "x": 652, "y": 424, "z": 3001, "width": 596, "height": 240,
+          "config": "{\"name\":\"vc-slicer-fecha\",\"layouts\":[{\"id\":0,\"position\":{\"x\":652,\"y\":424,\"z\":3001,\"width\":596,\"height\":240,\"tabOrder\":3001}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"t.created_at\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"tickets\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"created_at\"},\"Name\":\"t.created_at\"}]},\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Between'\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Filtrar por Fecha'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"tickets\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"created_at\"},\"Name\":\"created_at\"}]}"
+        }
+
+      ]
+    },
+
+    {
+      "id": "s02",
+      "name": "ReportSection2",
+      "displayName": "Operaciones",
+      "ordinal": 1,
+      "filters": "[]",
+      "config": "{\"visibility\":0,\"displayOption\":1}",
+      "visualContainers": [
+
+        {
+          "x": 16, "y": 16, "z": 1000, "width": 200, "height": 80,
+          "config": "{\"name\":\"vc-op-slicer-sla\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":16,\"z\":1000,\"width\":200,\"height\":80,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"v.sla_estado\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_tickets_pendientes\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sla_estado\"},\"Name\":\"v.sla_estado\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Estado SLA'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_tickets_pendientes\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sla_estado\"},\"Name\":\"sla_estado\"}]}"
+        },
+
+        {
+          "x": 232, "y": 16, "z": 1001, "width": 200, "height": 80,
+          "config": "{\"name\":\"vc-op-slicer-prioridad\",\"layouts\":[{\"id\":0,\"position\":{\"x\":232,\"y\":16,\"z\":1001,\"width\":200,\"height\":80,\"tabOrder\":1001}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"v.prioridad\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_tickets_pendientes\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"prioridad\"},\"Name\":\"v.prioridad\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Prioridad'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_tickets_pendientes\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"prioridad\"},\"Name\":\"prioridad\"}]}"
+        },
+
+        {
+          "x": 16, "y": 112, "z": 2000, "width": 1232, "height": 380,
+          "config": "{\"name\":\"vc-tabla-pendientes\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":112,\"z\":2000,\"width\":1232,\"height\":380,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"v.numero_ticket\"},{\"queryRef\":\"v.descripcion\"},{\"queryRef\":\"v.estado_actual\"},{\"queryRef\":\"v.prioridad\"},{\"queryRef\":\"v.usuario\"},{\"queryRef\":\"v.admin_asignado\"},{\"queryRef\":\"v.sitio\"},{\"queryRef\":\"v.horas_desde_creacion\"},{\"queryRef\":\"v.sla_horas_restantes\"},{\"queryRef\":\"v.sla_estado\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_tickets_pendientes\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"numero_ticket\"},\"Name\":\"v.numero_ticket\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"descripcion\"},\"Name\":\"v.descripcion\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"estado_actual\"},\"Name\":\"v.estado_actual\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"prioridad\"},\"Name\":\"v.prioridad\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"usuario\"},\"Name\":\"v.usuario\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"admin_asignado\"},\"Name\":\"v.admin_asignado\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sitio\"},\"Name\":\"v.sitio\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"horas_desde_creacion\"},\"Name\":\"v.horas_desde_creacion\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sla_horas_restantes\"},\"Name\":\"v.sla_horas_restantes\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sla_estado\"},\"Name\":\"v.sla_estado\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Tickets Activos con Alerta SLA'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_tickets_pendientes\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"numero_ticket\"},\"Name\":\"numero_ticket\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"descripcion\"},\"Name\":\"descripcion\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"estado_actual\"},\"Name\":\"estado_actual\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"prioridad\"},\"Name\":\"prioridad\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"usuario\"},\"Name\":\"usuario\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"admin_asignado\"},\"Name\":\"admin_asignado\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sitio\"},\"Name\":\"sitio\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"horas_desde_creacion\"},\"Name\":\"horas\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sla_horas_restantes\"},\"Name\":\"sla_restantes\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sla_estado\"},\"Name\":\"sla_estado\"}]}"
+        },
+
+        {
+          "x": 16, "y": 508, "z": 3000, "width": 608, "height": 196,
+          "config": "{\"name\":\"vc-barras-admin\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":508,\"z\":3000,\"width\":608,\"height\":196,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"a.nombre\"}],\"Y\":[{\"queryRef\":\"m.Tickets Activos\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"Administradores\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"nombre\"},\"Name\":\"a.nombre\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Tickets Activos\"},\"Name\":\"m.Tickets Activos\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Tickets Activos por Admin'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"Administradores\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"_Medidas\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"nombre\"},\"Name\":\"admin\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Tickets Activos\"},\"Name\":\"activos\"}]}"
+        }
+
+      ]
+    },
+
+    {
+      "id": "s03",
+      "name": "ReportSection3",
+      "displayName": "Rendimiento y SLA",
+      "ordinal": 2,
+      "filters": "[]",
+      "config": "{\"visibility\":0,\"displayOption\":1}",
+      "visualContainers": [
+
+        {
+          "x": 16, "y": 16, "z": 1000, "width": 1232, "height": 260,
+          "config": "{\"name\":\"vc-tabla-admins\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":16,\"z\":1000,\"width\":1232,\"height\":260,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"v.admin\"},{\"queryRef\":\"v.total_asignados\"},{\"queryRef\":\"v.activos\"},{\"queryRef\":\"v.cerrados\"},{\"queryRef\":\"v.promedio_horas_resolucion\"},{\"queryRef\":\"v.promedio_horas_primera_respuesta\"},{\"queryRef\":\"v.dentro_sla\"},{\"queryRef\":\"v.fuera_sla\"},{\"queryRef\":\"v.pct_cumplimiento_sla\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_metricas_admin\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"admin\"},\"Name\":\"v.admin\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total_asignados\"},\"Name\":\"v.total_asignados\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"activos\"},\"Name\":\"v.activos\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"cerrados\"},\"Name\":\"v.cerrados\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"promedio_horas_resolucion\"},\"Name\":\"v.promedio_horas_resolucion\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"promedio_horas_primera_respuesta\"},\"Name\":\"v.promedio_horas_primera_respuesta\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"dentro_sla\"},\"Name\":\"v.dentro_sla\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"fuera_sla\"},\"Name\":\"v.fuera_sla\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"pct_cumplimiento_sla\"},\"Name\":\"v.pct_cumplimiento_sla\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Metricas por Administrador'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_metricas_admin\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"admin\"},\"Name\":\"admin\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total_asignados\"},\"Name\":\"total\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"activos\"},\"Name\":\"activos\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"cerrados\"},\"Name\":\"cerrados\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"promedio_horas_resolucion\"},\"Name\":\"prom_h\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"promedio_horas_primera_respuesta\"},\"Name\":\"prim_resp\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"dentro_sla\"},\"Name\":\"dentro\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"fuera_sla\"},\"Name\":\"fuera\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"pct_cumplimiento_sla\"},\"Name\":\"pct\"}]}"
+        },
+
+        {
+          "x": 16, "y": 292, "z": 2000, "width": 608, "height": 220,
+          "config": "{\"name\":\"vc-barras-sla-prioridad\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":292,\"z\":2000,\"width\":608,\"height\":220,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"v.prioridad\"}],\"Y\":[{\"queryRef\":\"v.pct_cumplimiento_sla\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_promedio_por_prioridad\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"prioridad\"},\"Name\":\"v.prioridad\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"pct_cumplimiento_sla\"},\"Name\":\"v.pct_cumplimiento_sla\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'% SLA por Prioridad'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_promedio_por_prioridad\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"prioridad\"},\"Name\":\"prioridad\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"pct_cumplimiento_sla\"},\"Name\":\"pct\"}]}"
+        },
+
+        {
+          "x": 640, "y": 292, "z": 2001, "width": 608, "height": 220,
+          "config": "{\"name\":\"vc-barras-sla-asunto\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":292,\"z\":2001,\"width\":608,\"height\":220,\"tabOrder\":2001}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"v.asunto\"}],\"Y\":[{\"queryRef\":\"v.pct_cumplimiento_sla\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_promedio_por_asunto\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"asunto\"},\"Name\":\"v.asunto\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"pct_cumplimiento_sla\"},\"Name\":\"v.pct_cumplimiento_sla\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'% SLA por Asunto (Top 10)'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_promedio_por_asunto\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"asunto\"},\"Name\":\"asunto\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"pct_cumplimiento_sla\"},\"Name\":\"pct\"}]}"
+        }
+
+      ]
+    },
+
+    {
+      "id": "s04",
+      "name": "ReportSection4",
+      "displayName": "Distribucion",
+      "ordinal": 3,
+      "filters": "[]",
+      "config": "{\"visibility\":0,\"displayOption\":1}",
+      "visualContainers": [
+
+        {
+          "x": 16, "y": 16, "z": 1000, "width": 1232, "height": 240,
+          "config": "{\"name\":\"vc-barras-sitio\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":16,\"z\":1000,\"width\":1232,\"height\":240,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"v.sitio\"}],\"Y\":[{\"queryRef\":\"v.activos\"},{\"queryRef\":\"v.cerrados\"}],\"Series\":[{\"queryRef\":\"v.region\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_sitio\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sitio\"},\"Name\":\"v.sitio\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"activos\"},\"Name\":\"v.activos\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"cerrados\"},\"Name\":\"v.cerrados\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"region\"},\"Name\":\"v.region\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Tickets por Sede'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_sitio\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sitio\"},\"Name\":\"sitio\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"activos\"},\"Name\":\"activos\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"cerrados\"},\"Name\":\"cerrados\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"region\"},\"Name\":\"region\"}]}"
+        },
+
+        {
+          "x": 16, "y": 272, "z": 2000, "width": 608, "height": 240,
+          "config": "{\"name\":\"vc-barras-linea\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":272,\"z\":2000,\"width\":608,\"height\":240,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"v.linea_negocio\"}],\"Y\":[{\"queryRef\":\"v.activos\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_linea_negocio\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"linea_negocio\"},\"Name\":\"v.linea_negocio\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"activos\"},\"Name\":\"v.activos\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Activos por Linea de Negocio'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_linea_negocio\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"linea_negocio\"},\"Name\":\"linea\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"activos\"},\"Name\":\"activos\"}]}"
+        },
+
+        {
+          "x": 640, "y": 272, "z": 2001, "width": 608, "height": 240,
+          "config": "{\"name\":\"vc-barras-tipo-asunto\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":272,\"z\":2001,\"width\":608,\"height\":240,\"tabOrder\":2001}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"v.tipo_asunto\"}],\"Y\":[{\"queryRef\":\"v.total_tickets\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_tipo_asunto\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"tipo_asunto\"},\"Name\":\"v.tipo_asunto\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total_tickets\"},\"Name\":\"v.total_tickets\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Distribucion por Tipo de Asunto'\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}},\"fontColor\":{\"solid\":{\"color\":\"#13223a\"}}}}]}}}",
+          "filters": "[]",
+          "query": "{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"v_dash_por_tipo_asunto\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"tipo_asunto\"},\"Name\":\"tipo\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total_tickets\"},\"Name\":\"total\"}]}"
+        }
+
+      ]
+    }
+
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"CREATE TABLE\\\\|^\\\\s*\\\\`\" c:/xampp/htdocs/sistema_tickets/database/v2/bd_tickets_tickets.sql)"
+    ]
+  }
+}

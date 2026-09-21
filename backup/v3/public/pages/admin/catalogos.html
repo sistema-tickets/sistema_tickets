@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogos — Sistema de Tickets</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .tabs { display: flex; gap: 2px; border-bottom: 2px solid var(--border); margin-bottom: 1.25rem; }
+    .tab { padding: .6rem 1.2rem; font-size: .8rem; font-weight: 600; border: none; background: none; cursor: pointer; color: var(--text-secondary); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .15s; }
+    .tab:hover { color: var(--text-primary); }
+    .tab.active { color: var(--sidebar-bg); border-bottom-color: var(--sidebar-bg); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .inline-form { display: flex; gap: .5rem; align-items: flex-end; margin-bottom: 1rem; flex-wrap: wrap; }
+    .inline-form .form-group { margin-bottom: 0; }
+    .actions-cell { display: flex; gap: .35rem; }
+    .btn-icon { width: 30px; height: 30px; border: none; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; transition: all .15s; }
+    .btn-icon-edit { background: #e8f0fe; color: #1a73e8; }
+    .btn-icon-edit:hover { background: #1a73e8; color: #fff; }
+    .btn-icon-del { background: #fee2e2; color: #b91c1c; }
+    .btn-icon-del:hover { background: #b91c1c; color: #fff; }
+    .btn-icon-del:disabled { opacity: .5; cursor: not-allowed; background: #fee2e2; color: #b91c1c; }
+    .editing-row { background: #fffff0 !important; }
+    .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch .slider { position: absolute; inset: 0; background: #ccc; border-radius: 20px; cursor: pointer; transition: .2s; }
+    .switch .slider::before { content: ''; position: absolute; left: 3px; bottom: 3px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transition: .2s; }
+    .switch input:checked + .slider { background: #15803d; }
+    .switch input:checked + .slider::before { transform: translateX(16px); }
+    .catalog-help { font-size: .75rem; color: var(--text-secondary); margin-bottom: .75rem; }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 9999; opacity: 0; transform: translateY(12px); transition: all .25s; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast-success { background: #15803d; color: #fff; }
+    .toast-error { background: #b91c1c; color: #fff; }
+  </style>
+</head>
+<body class="dash-body">
+<div id="app" class="app-layout" v-cloak>
+
+  <aside class="sidebar">
+    <div style="font-weight:700;font-size:1rem;padding:.5rem .75rem;margin-bottom:.5rem">Tickets</div>
+    <a href="../../index.php" class="nav-item">Lista de Tickets</a>
+    <a href="../tickets/crear.html" class="nav-item">Nuevo Ticket</a>
+    <hr style="border-color:var(--color-border);margin:.5rem 0">
+    <a href="usuarios.html" class="nav-item">Usuarios</a>
+    <a href="catalogos.html" class="nav-item active">Catálogos</a>
+    <div style="flex:1"></div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-info">
+        <i class="fa-solid fa-user"></i>
+        <span>{{ usuario?.nombre || 'Usuario' }}</span>
+      </div>
+      <button @click="logout" class="sidebar-logout" title="Cerrar sesión">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
+  </aside>
+
+  <div style="flex:1;display:flex;flex-direction:column">
+    <main class="main-content" style="padding:1.5rem 2rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <h2 style="margin:0">Catálogos</h2>
+      </div>
+      <p class="catalog-help">Administra las tablas base del sistema: regiones, sitios, líneas de negocio, tipos de solicitud, tipos de asunto y lugar de incidencia.</p>
+
+      <div class="card">
+        <div class="tabs">
+          <button v-for="t in tabs" :key="t.key" class="tab" :class="{active: tab===t.key}" @click="tab=t.key">{{ t.label }}</button>
+        </div>
+
+        <!-- Tab: Regiones -->
+        <div class="tab-content" :class="{active: tab==='regiones'}">
+          <div class="inline-form" @submit.prevent="crear('regiones')">
+            <div class="form-group">
+              <label class="form-label">Código</label>
+              <input v-model="frmRegiones.codigo" class="form-control" placeholder="Ej: REG-01" style="width:100px" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input v-model="frmRegiones.nombre" class="form-control" placeholder="Ej: Capital" required>
+            </div>
+            <button @click="crear('regiones')" class="btn btn-primary" :disabled="loading">Agregar</button>
+          </div>
+          <div v-if="loading" style="color:var(--color-muted)">Cargando...</div>
+          <div v-else class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th style="width:80px"></th></tr></thead>
+              <tbody>
+                <tr v-for="r in data.regiones" :key="r.id" :class="{'editing-row': editando?.id===r.id && editando?.tipo==='regiones'}">
+                  <td>{{ r.id }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='regiones'">
+                    <input v-model="editando.codigo" class="form-control" style="width:90px">
+                  </td>
+                  <td v-else>{{ r.codigo }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='regiones'">
+                    <input v-model="editando.nombre" class="form-control">
+                  </td>
+                  <td v-else>{{ r.nombre }}</td>
+                  <td>
+                    <div v-if="editando?.id===r.id && editando?.tipo==='regiones'" class="actions-cell">
+                      <button @click="guardar('regiones')" class="btn-icon btn-icon-edit" title="Guardar"><i class="fa-solid fa-check"></i></button>
+                      <button @click="cancelarEdit" class="btn-icon" style="background:#f3f4f6;color:#666" title="Cancelar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div v-else class="actions-cell">
+                      <button @click="editar('regiones', r)" class="btn-icon btn-icon-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                      <button @click="eliminar('regiones', r.id)" class="btn-icon btn-icon-del" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!data.regiones?.length"><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:2rem">Sin registros</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Sitios -->
+        <div class="tab-content" :class="{active: tab==='sitios'}">
+          <div class="inline-form">
+            <div class="form-group">
+              <label class="form-label">Región</label>
+              <select v-model="frmSitios.region_id" class="form-control" style="min-width:140px" required>
+                <option value="">Seleccionar...</option>
+                <option v-for="r in data.regiones" :key="r.id" :value="r.id">{{ r.nombre }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input v-model="frmSitios.nombre" class="form-control" placeholder="Ej: Bogotá" required>
+            </div>
+            <button @click="crear('sitios')" class="btn btn-primary" :disabled="loading">Agregar</button>
+          </div>
+          <div v-if="loading" style="color:var(--color-muted)">Cargando...</div>
+          <div v-else class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Región</th><th>Nombre</th><th style="width:80px"></th></tr></thead>
+              <tbody>
+                <tr v-for="r in data.sitios" :key="r.id" :class="{'editing-row': editando?.id===r.id && editando?.tipo==='sitios'}">
+                  <td>{{ r.id }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='sitios'">
+                    <select v-model="editando.region_id" class="form-control" style="min-width:120px">
+                      <option v-for="reg in data.regiones" :key="reg.id" :value="reg.id">{{ reg.nombre }}</option>
+                    </select>
+                  </td>
+                  <td v-else>{{ regionNombre(r.region_id) }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='sitios'">
+                    <input v-model="editando.nombre" class="form-control">
+                  </td>
+                  <td v-else>{{ r.nombre }}</td>
+                  <td>
+                    <div v-if="editando?.id===r.id && editando?.tipo==='sitios'" class="actions-cell">
+                      <button @click="guardar('sitios')" class="btn-icon btn-icon-edit" title="Guardar"><i class="fa-solid fa-check"></i></button>
+                      <button @click="cancelarEdit" class="btn-icon" style="background:#f3f4f6;color:#666" title="Cancelar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div v-else class="actions-cell">
+                      <button @click="editar('sitios', r)" class="btn-icon btn-icon-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                      <button @click="eliminar('sitios', r.id)" class="btn-icon btn-icon-del" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!data.sitios?.length"><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:2rem">Sin registros</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Líneas -->
+        <div class="tab-content" :class="{active: tab==='lineas'}">
+          <div class="inline-form">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input v-model="frmLineas.nombre" class="form-control" placeholder="Ej: Comercial" required>
+            </div>
+            <button @click="crear('lineas')" class="btn btn-primary" :disabled="loading">Agregar</button>
+          </div>
+          <div v-if="loading" style="color:var(--color-muted)">Cargando...</div>
+          <div v-else class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Nombre</th><th>Activo</th><th style="width:80px"></th></tr></thead>
+              <tbody>
+                <tr v-for="r in data.lineas" :key="r.id" :class="{'editing-row': editando?.id===r.id && editando?.tipo==='lineas'}">
+                  <td>{{ r.id }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='lineas'">
+                    <input v-model="editando.nombre" class="form-control">
+                  </td>
+                  <td v-else>{{ r.nombre }}</td>
+                  <td>
+                    <label v-if="editando?.id===r.id && editando?.tipo==='lineas'" class="switch">
+                      <input type="checkbox" v-model="editando.activo" :true-value="1" :false-value="0">
+                      <span class="slider"></span>
+                    </label>
+                    <span v-else :class="r.activo?'badge badge-green':'badge badge-red'">{{ r.activo?'Activo':'Inactivo' }}</span>
+                  </td>
+                  <td>
+                    <div v-if="editando?.id===r.id && editando?.tipo==='lineas'" class="actions-cell">
+                      <button @click="guardar('lineas')" class="btn-icon btn-icon-edit" title="Guardar"><i class="fa-solid fa-check"></i></button>
+                      <button @click="cancelarEdit" class="btn-icon" style="background:#f3f4f6;color:#666" title="Cancelar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div v-else class="actions-cell">
+                      <button @click="editar('lineas', r)" class="btn-icon btn-icon-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                      <button @click="eliminar('lineas', r.id)" class="btn-icon btn-icon-del" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!data.lineas?.length"><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:2rem">Sin registros</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Tipos Solicitud -->
+        <div class="tab-content" :class="{active: tab==='tipos_solicitud'}">
+          <div class="inline-form">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input v-model="frmTiposSol.nombre" class="form-control" placeholder="Ej: Incidencia" required>
+            </div>
+            <button @click="crear('tipos_solicitud')" class="btn btn-primary" :disabled="loading">Agregar</button>
+          </div>
+          <div v-if="loading" style="color:var(--color-muted)">Cargando...</div>
+          <div v-else class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Nombre</th><th style="width:80px"></th></tr></thead>
+              <tbody>
+                <tr v-for="r in data.tipos_solicitud" :key="r.id" :class="{'editing-row': editando?.id===r.id && editando?.tipo==='tipos_solicitud'}">
+                  <td>{{ r.id }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='tipos_solicitud'">
+                    <input v-model="editando.nombre" class="form-control">
+                  </td>
+                  <td v-else>{{ r.nombre }}</td>
+                  <td>
+                    <div v-if="editando?.id===r.id && editando?.tipo==='tipos_solicitud'" class="actions-cell">
+                      <button @click="guardar('tipos_solicitud')" class="btn-icon btn-icon-edit" title="Guardar"><i class="fa-solid fa-check"></i></button>
+                      <button @click="cancelarEdit" class="btn-icon" style="background:#f3f4f6;color:#666" title="Cancelar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div v-else class="actions-cell">
+                      <button @click="editar('tipos_solicitud', r)" class="btn-icon btn-icon-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                      <button @click="eliminar('tipos_solicitud', r.id)" class="btn-icon btn-icon-del" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!data.tipos_solicitud?.length"><td colspan="3" style="text-align:center;color:var(--text-secondary);padding:2rem">Sin registros</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Tipos Asunto -->
+        <div class="tab-content" :class="{active: tab==='tipos_asunto'}">
+          <div class="inline-form">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input v-model="frmTiposAsu.nombre" class="form-control" placeholder="Ej: Soporte Técnico" required>
+            </div>
+            <button @click="crear('tipos_asunto')" class="btn btn-primary" :disabled="loading">Agregar</button>
+          </div>
+          <div v-if="loading" style="color:var(--color-muted)">Cargando...</div>
+          <div v-else class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Nombre</th><th style="width:80px"></th></tr></thead>
+              <tbody>
+                <tr v-for="r in data.tipos_asunto" :key="r.id" :class="{'editing-row': editando?.id===r.id && editando?.tipo==='tipos_asunto'}">
+                  <td>{{ r.id }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='tipos_asunto'">
+                    <input v-model="editando.nombre" class="form-control">
+                  </td>
+                  <td v-else>{{ r.nombre }}</td>
+                  <td>
+                    <div v-if="editando?.id===r.id && editando?.tipo==='tipos_asunto'" class="actions-cell">
+                      <button @click="guardar('tipos_asunto')" class="btn-icon btn-icon-edit" title="Guardar"><i class="fa-solid fa-check"></i></button>
+                      <button @click="cancelarEdit" class="btn-icon" style="background:#f3f4f6;color:#666" title="Cancelar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div v-else class="actions-cell">
+                      <button @click="editar('tipos_asunto', r)" class="btn-icon btn-icon-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                      <button @click="eliminar('tipos_asunto', r.id)" class="btn-icon btn-icon-del" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!data.tipos_asunto?.length"><td colspan="3" style="text-align:center;color:var(--text-secondary);padding:2rem">Sin registros</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Lugar Incidencia -->
+        <div class="tab-content" :class="{active: tab==='lugar_incidencia'}">
+          <div class="inline-form">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input v-model="frmLugar.nombre" class="form-control" placeholder="Ej: Interno" required>
+            </div>
+            <button @click="crear('lugar_incidencia')" class="btn btn-primary" :disabled="loading">Agregar</button>
+          </div>
+          <div v-if="loading" style="color:var(--color-muted)">Cargando...</div>
+          <div v-else class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Nombre</th><th style="width:80px"></th></tr></thead>
+              <tbody>
+                <tr v-for="r in data.lugar_incidencia" :key="r.id" :class="{'editing-row': editando?.id===r.id && editando?.tipo==='lugar_incidencia'}">
+                  <td>{{ r.id }}</td>
+                  <td v-if="editando?.id===r.id && editando?.tipo==='lugar_incidencia'">
+                    <input v-model="editando.nombre" class="form-control">
+                  </td>
+                  <td v-else>{{ r.nombre }}</td>
+                  <td>
+                    <div v-if="editando?.id===r.id && editando?.tipo==='lugar_incidencia'" class="actions-cell">
+                      <button @click="guardar('lugar_incidencia')" class="btn-icon btn-icon-edit" title="Guardar"><i class="fa-solid fa-check"></i></button>
+                      <button @click="cancelarEdit" class="btn-icon" style="background:#f3f4f6;color:#666" title="Cancelar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div v-else class="actions-cell">
+                      <button @click="editar('lugar_incidencia', r)" class="btn-icon btn-icon-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                      <button @click="eliminar('lugar_incidencia', r.id)" class="btn-icon btn-icon-del" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!data.lugar_incidencia?.length"><td colspan="3" style="text-align:center;color:var(--text-secondary);padding:2rem">Sin registros</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" :class="toastCls" ref="toast">{{ toastMsg }}</div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/header.js"></script>
+<script>
+Vue.createApp({
+  data() {
+    return {
+      usuario: null,
+      tab: 'regiones',
+      tabs: [
+        { key: 'regiones', label: 'Regiones' },
+        { key: 'sitios', label: 'Sitios' },
+        { key: 'lineas', label: 'Líneas Negocio' },
+        { key: 'tipos_solicitud', label: 'Tipos Solicitud' },
+        { key: 'tipos_asunto', label: 'Tipos Asunto' },
+        { key: 'lugar_incidencia', label: 'Lugar Incidencia' },
+      ],
+      loading: false,
+      data: {
+        regiones: [],
+        sitios: [],
+        lineas: [],
+        tipos_solicitud: [],
+        tipos_asunto: [],
+        lugar_incidencia: [],
+      },
+      editando: null,
+      // Forms
+      frmRegiones: { codigo: '', nombre: '' },
+      frmSitios: { region_id: '', nombre: '' },
+      frmLineas: { nombre: '' },
+      frmTiposSol: { nombre: '' },
+      frmTiposAsu: { nombre: '' },
+      frmLugar: { nombre: '' },
+      toastMsg: '',
+      toastType: 'success',
+      toastTimer: null,
+    };
+  },
+  computed: {
+    toastCls() { return 'toast toast-' + this.toastType; },
+  },
+  async mounted() {
+    Auth.requireAdmin();
+    this.usuario = Auth.getUsuario();
+    await this.cargarTodo();
+  },
+  methods: {
+    async cargarTodo() {
+      this.loading = true;
+      try {
+        const keys = ['regiones', 'sitios', 'lineas', 'tipos_solicitud', 'tipos_asunto', 'lugar_incidencia'];
+        const res = await Promise.all(keys.map(k => api.catalogos.list(k)));
+        keys.forEach((k, i) => { this.data[k] = res[i]?.data || []; });
+      } catch (e) { this.toast('Error al cargar datos', 'error'); }
+      this.loading = false;
+    },
+    async crear(tipo) {
+      const frmMap = {
+        regiones: 'frmRegiones',
+        sitios: 'frmSitios',
+        lineas: 'frmLineas',
+        tipos_solicitud: 'frmTiposSol',
+        tipos_asunto: 'frmTiposAsu',
+        lugar_incidencia: 'frmLugar',
+      };
+      const frm = this[frmMap[tipo]];
+      const body = { ...frm };
+      if (tipo === 'lineas') body.activo = 1;
+
+      const r = await api.catalogos.create(tipo, body);
+      if (r?.success) {
+        Object.assign(frm, { codigo: '', region_id: '', nombre: '' });
+        await this.cargarTodo();
+        this.toast('Creado correctamente', 'success');
+      } else {
+        this.toast(r?.message || 'Error al crear', 'error');
+      }
+    },
+    editar(tipo, item) {
+      this.editando = { tipo, id: item.id, ...JSON.parse(JSON.stringify(item)) };
+    },
+    cancelarEdit() {
+      this.editando = null;
+    },
+    async guardar(tipo) {
+      if (!this.editando) return;
+      const body = {};
+      // Only send fields that changed (relevant to each catalog type)
+      const fieldMap = {
+        regiones: ['codigo', 'nombre'],
+        sitios: ['region_id', 'nombre'],
+        lineas: ['nombre', 'activo'],
+        tipos_solicitud: ['nombre'],
+        tipos_asunto: ['nombre'],
+        lugar_incidencia: ['nombre'],
+      };
+      for (const f of (fieldMap[tipo] || [])) {
+        body[f] = this.editando[f];
+      }
+      const r = await api.catalogos.update(tipo, this.editando.id, body);
+      if (r?.success) {
+        this.editando = null;
+        await this.cargarTodo();
+        this.toast('Actualizado correctamente', 'success');
+      } else {
+        this.toast(r?.message || 'Error al actualizar', 'error');
+      }
+    },
+    async eliminar(tipo, id) {
+      if (!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.')) return;
+      const r = await api.catalogos.delete(tipo, id);
+      if (r?.success) {
+        await this.cargarTodo();
+        this.toast('Eliminado correctamente', 'success');
+      } else {
+        this.toast(r?.message || 'Error al eliminar', 'error');
+      }
+    },
+    regionNombre(id) {
+      const r = this.data.regiones.find(x => x.id === id);
+      return r ? r.nombre : '—';
+    },
+    toast(msg, type = 'success') {
+      this.toastMsg = msg;
+      this.toastType = type;
+      clearTimeout(this.toastTimer);
+      this.$nextTick(() => {
+        const el = this.$refs.toast;
+        if (el) el.classList.add('show');
+      });
+      this.toastTimer = setTimeout(() => {
+        const el = this.$refs.toast;
+        if (el) el.classList.remove('show');
+      }, 3000);
+    },
+    logout() { Auth.logout(); },
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
